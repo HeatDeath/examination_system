@@ -12,6 +12,8 @@
 	<!-- 引入JQuery  bootstrap.js-->
 	<script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
+
 </head>
 <body>
 <!-- 顶栏 -->
@@ -28,7 +30,7 @@
 					</div>
 				</div>
 				<div class="panel-body">
-					<form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/admin/addCourse" id="editfrom" method="post">
+					<form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/admin/addCourse" id="editForm" method="post">
 						<div class="form-group">
 							<label for="inputEmail3" class="col-sm-2 control-label">课程号</label>
 							<div class="col-sm-10">
@@ -96,7 +98,7 @@
 							</div>
 						</div>
 						<div class="form-group" style="text-align: center">
-							<button class="btn btn-default" type="submit">提交</button>
+							<button class="btn btn-default" type="button" id="submitAddCourseForm">提交</button>
 							<button class="btn btn-default" type="reset">重置</button>
 						</div>
 					</form>
@@ -114,6 +116,27 @@
 </div>
 </body>
 <script type="text/javascript">
-    $("#nav li:nth-child(1)").addClass("active")
+    $("#submitAddCourseForm").click(function () {
+		$('#editForm').ajaxSubmit({
+            dateType: 'json',
+			success: function (respText) {
+                alert("ajax返回成功");
+                console.log(respText);
+                respText = $.parseJSON(respText);
+                console.log(respText);
+                console.log(respText.msg);
+                console.log($.type(respText.msg));
+                console.log(respText.msg == "false")
+
+                if (respText.msg == "fail"){
+                    alert("课程号重复！添加失败！");
+                    window.location.href = "${pageContext.request.contextPath}/admin/addCourse";
+				}else {
+                    alert("成功添加课程！");
+                    window.location.href = "${pageContext.request.contextPath}/admin/showCourse";
+                }
+            }
+		})
+    })
 </script>
 </html>

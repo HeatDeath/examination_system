@@ -13,8 +13,9 @@
 	<!-- 引入JQuery  bootstrap.js-->
 	<script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
 
-	<%--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">--%>
+<%--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">--%>
 
 </head>
 <body>
@@ -34,7 +35,8 @@
 							<form class="bs-example bs-example-form col-md-5" role="form" style="margin: 20px 0 10px 0;" action="${pageContext.request.contextPath}/admin/searchCourse" id="form1" method="post">
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="请输入课程名称" name="coursename">
-									<span class="input-group-addon btn" onclick="document.getElementById('form1').submit" id="sub">搜索</span>
+									<%--<input type="hidden" name="page" value="1">--%>
+									<span class="input-group-addon btn" id="sub" onclick="$('#form1').submit()">搜索</span>
 								</div>
 							</form>
 
@@ -84,17 +86,17 @@
 						<c:if test="${page!=null}">
 							<nav style="text-align: center">
 								<ul class="pagination">
-									<%-- 首页 --%>
-									<c:if test="${pageInfo.firstPage!=null}">
-										<li>
-											<a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.firstPage}&rows=${pageInfo.pageSize}&coursename=${queryParam.coursename}">首页</a>
-										</li>
-									</c:if>
+									<%--&lt;%&ndash; 首页 &ndash;%&gt;--%>
+									<%--<c:if test="${pageInfo.firstPage!=null}">--%>
+										<%--<li>--%>
+											<%--<a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.firstPage}&coursename=${queryParam.coursename}">首页</a>--%>
+										<%--</li>--%>
+									<%--</c:if>--%>
 
 									<%-- 上一页 --%>
 									<c:if test="${pageInfo.hasPreviousPage}">
 										<li>
-											<a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.prePage}&rows=${pageInfo.pageSize}&coursename=${queryParam.coursename}">&laquo;上一页</a>
+											<a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.prePage}&coursename=${queryParam.coursename}">&laquo;上一页</a>
 										</li>
 									</c:if>
 
@@ -106,22 +108,22 @@
 										</c:if>
 										<c:if test="${nav != pageInfo.pageNum}">
 											<li>
-												<a href="${pageContext.request.contextPath}/admin/showCourse?page=${nav}&rows=${pageInfo.pageSize}&coursename=${queryParam.coursename}">${nav}</a>
+												<a href="${pageContext.request.contextPath}/admin/showCourse?page=${nav}&coursename=${queryParam.coursename}">${nav}</a>
 											</li>
 										</c:if>
 									</c:forEach>
 
 									<%-- 下一页 --%>
 									<c:if test="${pageInfo.hasNextPage}">
-										<li><a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.nextPage}&rows=${pageInfo.pageSize}&coursename=${queryParam.coursename}">下一页&raquo;</a></li>
+										<li><a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.nextPage}&coursename=${queryParam.coursename}">下一页&raquo;</a></li>
 									</c:if>
 
-									<%-- 末页 --%>
-									<c:if test="${pageInfo.firstPage!=null}">
-										<li>
-											<a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.lastPage}&rows=${pageInfo.pageSize}&coursename=${queryParam.coursename}">最后一页</a>
-										</li>
-									</c:if>
+									<%--&lt;%&ndash; 末页 &ndash;%&gt;--%>
+									<%--<c:if test="${pageInfo.firstPage!=null}">--%>
+										<%--<li>--%>
+											<%--<a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.lastPage}&coursename=${queryParam.coursename}">最后一页</a>--%>
+										<%--</li>--%>
+									<%--</c:if>--%>
 								</ul>
 							</nav>
 						</c:if>
@@ -159,8 +161,43 @@
             }
         }
 
-        $("#sub").click(function () {
-            $("#form1").submit();
-        });
+
+//        $("#sub").click(function () {
+//            $("#form1").ajaxSubmit({
+//				datatype: 'json',
+//				success: function (respText) {
+//				    alert("json 返回成功！");
+//					console.log(respText);
+//					console.log($.type(respText));
+//
+//					var return_json = $.parseJSON(respText);
+//					console.log(return_json);
+//					console.log(return_json.courseCount);
+//					console.log(return_json.pageInfo);
+//					console.log(return_json.pageInfo.list);
+//
+//					respText = $.parseJSON(respText);
+//					var res = [];
+//					$.each(respText.pageInfo.list, function (i, item) {
+//                        res.push('<tr>');
+//                        res.push('<td>' + item.courseid + '</td>');
+//                        res.push('<td>' + item.coursename + '</td>');
+//                        res.push('<td>' + item.teacherid + '</td>');
+//                        res.push('<td>' + item.coursetime + '</td>');
+//                        res.push('<td>' + item.classroom + '</td>');
+//                        res.push('<td>' + item.courseweek + '</td>');
+//                        res.push('<td>' + item.coursetype + '</td>');
+//                        res.push('<td>' + item.score + '</td>');
+//                        res.push('<td>');
+//                        res.push("<button class=\"btn btn-default btn-xs btn-info\" onClick=\"location.href=\'/admin/editCourse?id=" + item.courseid + "\'\">修改</button>");
+//                        res.push("<button class=\"btn btn-default btn-xs btn-danger btn-primary\" onClick=\"location.href=\'/admin/removeCourse?id=" + item.courseid + "\'\">删除</button>");
+//                        res.push('</td>');
+//                        res.push('</tr>');
+//                    });
+//					$("tbody").empty().html(res.join(""));
+//                }})
+//			});
+
+        
 	</script>
 </html>

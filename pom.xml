@@ -164,6 +164,13 @@
       <version>4.1.7.RELEASE</version>
     </dependency>
 
+    <!-- fast json -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.39</version>
+    </dependency>
+
   </dependencies>
 
   <build>
