@@ -9,21 +9,20 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- 引入bootstrap -->
-	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
 	<!-- 引入JQuery  bootstrap.js-->
-	<script src="/js/jquery-3.2.1.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-
-	<%--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">--%>
+	<script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
 
 </head>
 <body>
 	<!-- 顶栏 -->
-	<jsp:include page="top.jsp"></jsp:include>
+	<jsp:include page="top.jsp" />
 	<!-- 中间主体 -->
 	<div class="container" id="content">
 		<div class="row">
-			<jsp:include page="menu.jsp"></jsp:include>
+			<jsp:include page="menu.jsp" />
 			<div class="col-md-10">
 				<div class="panel panel-default">
 				    <div class="panel-heading">
@@ -37,7 +36,7 @@
 							</form>
 							<button class="btn btn-default col-md-2" style="margin-top: 20px" onClick="location.href='/admin/addStudent'">
 								添加用户信息
-								<sapn class="glyphicon glyphicon-plus"/>
+								<sapn class="glyphicon glyphicon-plus" />
 							</button>
 
 						</div>
@@ -55,7 +54,7 @@
 					            </tr>
 					        </thead>
 					        <tbody>
-							<c:forEach  items="${studentList}" var="item">
+							<c:forEach  items="${pageInfo.list}" var="item">
 								<tr>
 									<td>${item.userid}</td>
 									<td>${item.username}</td>
@@ -73,24 +72,34 @@
 					        </tbody>
 				    </table>
 				    <div class="panel-footer">
-						<c:if test="${pagingVO != null}">
+						<c:if test="${page!=null}">
 							<nav style="text-align: center">
 								<ul class="pagination">
-									<li><a href="/admin/showStudent?page=${pagingVO.upPageNo}">&laquo;上一页</a></li>
-									<li class="active"><a href="">${pagingVO.curentPageNo}</a></li>
-									<c:if test="${pagingVO.curentPageNo+1 <= pagingVO.totalCount}">
-										<li><a href="/admin/showStudent?page=${pagingVO.curentPageNo+1}">${pagingVO.curentPageNo+1}</a></li>
+										<%-- 上一页 --%>
+									<c:if test="${pageInfo.hasPreviousPage}">
+										<li>
+											<a href="${pageContext.request.contextPath}/admin/showStudent?page=${pageInfo.prePage}&username=${queryParam.username}">&laquo;上一页</a>
+										</li>
 									</c:if>
-									<c:if test="${pagingVO.curentPageNo+2 <= pagingVO.totalCount}">
-										<li><a href="/admin/showStudent?page=${pagingVO.curentPageNo+2}">${pagingVO.curentPageNo+2}</a></li>
+
+										<%-- 中间的索引 --%>
+									<c:forEach items="${pageInfo.navigatepageNums}" var="nav">
+										<%-- 当前页 --%>
+										<c:if test="${nav == pageInfo.pageNum}">
+											<li class="active"><a href="">${nav}</a></li>
+										</c:if>
+										<c:if test="${nav != pageInfo.pageNum}">
+											<li>
+												<a href="${pageContext.request.contextPath}/admin/showStudent?page=${nav}&username=${queryParam.username}">${nav}</a>
+											</li>
+										</c:if>
+									</c:forEach>
+
+										<%-- 下一页 --%>
+									<c:if test="${pageInfo.hasNextPage}">
+										<li><a href="${pageContext.request.contextPath}/admin/showStudent?page=${pageInfo.nextPage}&username=${queryParam.username}">下一页&raquo;</a></li>
 									</c:if>
-									<c:if test="${pagingVO.curentPageNo+3 <= pagingVO.totalCount}">
-										<li><a href="/admin/showStudent?page=${pagingVO.curentPageNo+3}">${pagingVO.curentPageNo+3}</a></li>
-									</c:if>
-									<c:if test="${pagingVO.curentPageNo+4 <= pagingVO.totalCount}">
-										<li><a href="/admin/showStudent?page=${pagingVO.curentPageNo+4}">${pagingVO.curentPageNo+4}</a></li>
-									</c:if>
-									<li><a href="/admin/showStudent?page=${pagingVO.totalCount}">最后一页&raquo;</a></li>
+
 								</ul>
 							</nav>
 						</c:if>
@@ -122,14 +131,5 @@
             $("#form1").submit();
         });
 
-        <c:if test="${pagingVO != null}">
-			if (${pagingVO.curentPageNo} == ${pagingVO.totalCount}) {
-				$(".pagination li:last-child").addClass("disabled")
-			};
-
-			if (${pagingVO.curentPageNo} == ${1}) {
-				$(".pagination li:nth-child(1)").addClass("disabled")
-			};
-        </c:if>
 	</script>
 </html>

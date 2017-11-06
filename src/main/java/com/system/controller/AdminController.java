@@ -4,11 +4,10 @@ package com.system.controller;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.system.po.Course;
-import com.system.po.CourseCustom;
-import com.system.po.CourseExample;
+import com.system.po.*;
 import com.system.service.CollegeService;
 import com.system.service.CourseService;
+import com.system.service.StudentService;
 import com.system.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,14 +21,14 @@ import java.util.Map;
 
 
 @Controller
-@SessionAttributes({"courseCount"})
+@SessionAttributes({"courseCount", "studentCount"})
 @RequestMapping("/admin")
 public class AdminController {
 
-    private static final  int ROWS = 3;
+    private static final  int ROWS = 2;
 
-//    @Autowired
-//    private StudentService studentService;
+    @Autowired
+    private StudentService studentService;
 
     @Autowired
     private TeacherService teacherService;
@@ -103,14 +102,30 @@ public class AdminController {
 
         if (result){
             resultMap.put("msg", "success");
+            resultMap.put("page_url", "/admin/showCourse");
         }else {
             resultMap.put("msg", "fail");
+            resultMap.put("page_url", "/admin/addCourse");
+
         }
         return JSON.toJSONString(resultMap);
     }
 
+    // -----------------------------------------------------------------------
 
+    @RequestMapping(value = "/showStudent")
+    public ModelAndView showStudent(Student student,
+                                    @RequestParam(required = false, defaultValue = "1") int page) throws Exception {
+        ModelAndView result = new ModelAndView("/admin/showStudent");
+        List<StudentCustom> studentList = studentService.findByName(student, page, ROWS);
+        // 获取学生数量
+        Long studentCount = studentService.getCountStudent();
+        result.addObject("pageInfo", new PageInfo<StudentCustom>(studentList));
+        result.addObject("page", page);
+        result.addObject("rows", ROWS);
+        result.addObject("queryParam", student);
+        result.addObject("studentCount", studentCount);
 
-
-
+        return result;
+    }
 }

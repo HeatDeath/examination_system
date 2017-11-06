@@ -120,21 +120,14 @@
 		$('#editForm').ajaxSubmit({
             dateType: 'json',
 			success: function (respText) {
-                alert("ajax返回成功");
-                console.log(respText);
                 respText = $.parseJSON(respText);
-                console.log(respText);
-                console.log(respText.msg);
-                console.log($.type(respText.msg));
-                console.log(respText.msg == "false")
-
                 if (respText.msg == "fail"){
                     alert("课程号重复！添加失败！");
-                    window.location.href = "${pageContext.request.contextPath}/admin/addCourse";
 				}else {
                     alert("成功添加课程！");
-                    window.location.href = "${pageContext.request.contextPath}/admin/showCourse";
                 }
+                window.location.href = "${pageContext.request.contextPath}" + respText.page_url;
+
             }
 		})
     })

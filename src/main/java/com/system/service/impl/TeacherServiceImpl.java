@@ -84,10 +84,8 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<TeacherCustom> findByName(String name) throws Exception {
         TeacherExample teacherExample = new TeacherExample();
-        //自定义查询条件
-        TeacherExample.Criteria criteria = teacherExample.createCriteria();
 
-        criteria.andUsernameLike("%" + name + "%");
+        teacherExample.or().andUsernameLike("%" + name + "%");
 
         List<Teacher> list = teacherMapper.selectByExample(teacherExample);
 
@@ -101,7 +99,7 @@ public class TeacherServiceImpl implements TeacherService {
                 BeanUtils.copyProperties(t, teacherCustom);
                 //获取课程名
                 College college = collegeMapper.selectByPrimaryKey(t.getCollegeid());
-                teacherCustom.setcollegeName(college.getCollegename());
+                teacherCustom.setCollegeName(college.getCollegename());
 
                 teacherCustomList.add(teacherCustom);
             }

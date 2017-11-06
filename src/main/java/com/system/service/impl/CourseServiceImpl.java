@@ -46,15 +46,6 @@ public class CourseServiceImpl implements CourseService{
         return false;
     }
 
-//    public List<CourseCustom> findByPaging(Integer toPageNo) throws Exception {
-//        PagingVO pagingVO = new PagingVO();
-//        pagingVO.setToPageNo(toPageNo);
-//
-//        List<CourseCustom> list = courseMapperCustom.findByPaging(pagingVO);
-//        return list;
-//    }
-
-
     @Override
     public List<Course> selectCourseByName(Course course, int page, int rows) {
         CourseExample courseExample = new CourseExample();
@@ -117,7 +108,7 @@ public class CourseServiceImpl implements CourseService{
                 org.springframework.beans.BeanUtils.copyProperties(c, courseCustom);
                 //获取课程名
                 College college = collegeMapper.selectByPrimaryKey(c.getCollegeid());
-                courseCustom.setcollegeName(college.getCollegename());
+                courseCustom.setCollegeName(college.getCollegename());
 
                 courseCustomList.add(courseCustom);
             }
@@ -145,7 +136,7 @@ public class CourseServiceImpl implements CourseService{
                 BeanUtils.copyProperties(courseCustom, c);
                 //获取课程名
                 College college = collegeMapper.selectByPrimaryKey(c.getCollegeid());
-                courseCustom.setcollegeName(college.getCollegename());
+                courseCustom.setCollegeName(college.getCollegename());
 
                 courseCustomList.add(courseCustom);
             }

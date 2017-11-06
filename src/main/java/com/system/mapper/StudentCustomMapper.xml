@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.mapper.StudentCustomMapper">
+  <resultMap id="BaseResultMap" type="com.system.po.StudentCustom">
+    <id column="userID" jdbcType="INTEGER" property="userid" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="birthYear" jdbcType="DATE" property="birthyear" />
+    <result column="grade" jdbcType="DATE" property="grade" />
+    <result column="collegeID" jdbcType="INTEGER" property="collegeid" />
+    <result column="collegeName" jdbcType="VARCHAR" property="collegeName"/>
+  </resultMap>
+  <select id="selectByName" resultMap="BaseResultMap">
+    SELECT
+      student.*,
+      college.*
+    FROM
+      student,
+      college
+    WHERE
+      student.userName LIKE #{name}
+    AND
+      student.collegeID = college.collegeID
+  </select>
+
+</mapper>
