@@ -25,6 +25,14 @@
     <!--加载静态资源-->
     <mvc:default-servlet-handler/>
 
+    <mvc:interceptors>
+        <!-- 配置一个用于处理对于 /admin/* 请求的拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/*" />
+            <bean class="com.system.interceptor.AdminInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 
     <!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<开启注解方式：配置>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-->
 

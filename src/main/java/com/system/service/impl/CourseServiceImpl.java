@@ -27,8 +27,8 @@ public class CourseServiceImpl implements CourseService{
     private SelectedCourseMapper selectedCourseMapper;
 
     @Override
-    public void updateByPrimaryKey(CourseCustom courseCustom) throws Exception {
-        courseMapper.updateByPrimaryKey(courseCustom);
+    public void updateByPrimaryKey(Course course) throws Exception {
+        courseMapper.updateByPrimaryKey(course);
     }
 
     @Override

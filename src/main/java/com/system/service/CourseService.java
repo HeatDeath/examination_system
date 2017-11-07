@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CourseService {
     //根据id更新课程信息
-    void updateByPrimaryKey(CourseCustom courseCustom) throws Exception;
+    void updateByPrimaryKey(Course course) throws Exception;
 
     //根据id删除课程信息
     Boolean removeById(Integer id) throws Exception;

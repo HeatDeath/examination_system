@@ -74,8 +74,10 @@
 									<td>${item.coursetype}</td>
 									<td>${item.score}</td>
 									<td>
-										<button class="btn btn-default btn-xs btn-info" onClick="location.href='/admin/editCourse?id=${item.courseid}'">修改</button>
-										<button class="btn btn-default btn-xs btn-danger btn-primary" onClick="location.href='/admin/removeCourse?id=${item.courseid}'">删除</button>
+										<button class="btn btn-default btn-xs btn-info" onclick="window.location.href='/admin/editCourse?id=${item.courseid}'">修改</button>
+										<%--<button class="btn btn-default btn-xs btn-danger btn-primary" onClick="window.location.href='/admin/removeCourse?id=${item.courseid}'">删除</button>--%>
+										<button class="btn btn-default btn-xs btn-danger btn-primary" onclick="confirmPrompt('${item.coursename}', '${item.courseid}')">删除</button>
+
 										<!--弹出框-->
 									</td>
 								</tr>
@@ -140,17 +142,7 @@
 	</div>
 </body>
 	<script type="text/javascript">
-		<%--&lt;%&ndash;设置菜单中&ndash;%&gt;--%>
-		<%--$("#nav li:nth-child(1)").addClass("active")--%>
-        <%--<c:if test="${pagingVO != null}">--%>
-        <%--if (${pagingVO.curentPageNo} == ${pagingVO.totalCount}) {--%>
-            <%--$(".pagination li:last-child").addClass("disabled")--%>
-        <%--};--%>
-
-        <%--if (${pagingVO.curentPageNo} == ${1}) {--%>
-            <%--$(".pagination li:nth-child(1)").addClass("disabled")--%>
-        <%--};--%>
-        <%--</c:if>--%>
+        $("#nav li:nth-child(1)").addClass("active")
 
         function confirmd() {
             var msg = "您真的确定要删除吗？！";
@@ -159,6 +151,24 @@
             }else{
                 return false;
             }
+        }
+
+        function confirmPrompt(courseName, courseId) {
+            var confirm_msg = "确定要删除 "+courseName + "(课程号:" + courseId +")" + "吗？！";
+            var userChoose = confirm(confirm_msg);
+            console.log("程序执行到 confirmPrompt");
+            if (userChoose == true){
+                var get_url = "${pageContext.request.contextPath}/admin/removeCourse?id=" + courseId;
+                $.get(get_url, function (respText) {
+                    respText = $.parseJSON(respText);
+                    if (respText.msg == "fail"){
+                        alert("课程信息删除失败！请再次尝试删除课程！");
+                    }else {
+                        alert("成功删除课程信息！");
+                        window.location.href = "${pageContext.request.contextPath}/admin/showCourse";
+                    }
+                })
+			}
         }
 
 

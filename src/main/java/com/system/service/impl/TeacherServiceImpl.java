@@ -113,6 +113,7 @@ public class TeacherServiceImpl implements TeacherService {
     public List<Teacher> findAll() throws Exception {
         TeacherExample teacherExample = new TeacherExample();
         teacherExample.or().andUsernameIsNotNull();
+        // 返回全部的教师
         return teacherMapper.selectByExample(teacherExample);
     }
 }
