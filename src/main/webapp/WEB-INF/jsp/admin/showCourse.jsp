@@ -7,24 +7,16 @@
 <head>
 	<title>课程信息显示</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- 引入bootstrap -->
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
-	<!-- 引入JQuery  bootstrap.js-->
-	<script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
-
-<%--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">--%>
+	<jsp:include page="../common.jsp" />
 
 </head>
 <body>
 	<!-- 顶栏 -->
-	<jsp:include page="top.jsp"></jsp:include>
+	<jsp:include page="top.jsp" />
 	<!-- 中间主体 -->
 	<div class="container" id="content">
 		<div class="row">
-			<jsp:include page="menu.jsp"></jsp:include>
+			<jsp:include page="menu.jsp" />
 			<div class="col-md-10">
 				<div class="panel panel-default">
 				    <div class="panel-heading">
@@ -75,9 +67,7 @@
 									<td>${item.score}</td>
 									<td>
 										<button class="btn btn-default btn-xs btn-info" onclick="window.location.href='/admin/editCourse?id=${item.courseid}'">修改</button>
-										<%--<button class="btn btn-default btn-xs btn-danger btn-primary" onClick="window.location.href='/admin/removeCourse?id=${item.courseid}'">删除</button>--%>
 										<button class="btn btn-default btn-xs btn-danger btn-primary" onclick="confirmPrompt('${item.coursename}', '${item.courseid}')">删除</button>
-
 										<!--弹出框-->
 									</td>
 								</tr>
@@ -142,16 +132,7 @@
 	</div>
 </body>
 	<script type="text/javascript">
-        $("#nav li:nth-child(1)").addClass("active")
-
-        function confirmd() {
-            var msg = "您真的确定要删除吗？！";
-            if (confirm(msg)==true){
-                return true;
-            }else{
-                return false;
-            }
-        }
+        $("#nav li:nth-child(1)").addClass("active");
 
         function confirmPrompt(courseName, courseId) {
             var confirm_msg = "确定要删除 "+courseName + "(课程号:" + courseId +")" + "吗？！";

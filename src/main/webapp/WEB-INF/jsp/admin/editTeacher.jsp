@@ -5,14 +5,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>编辑教师信息</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- 引入bootstrap -->
-	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-	<!-- 引入JQuery  bootstrap.js-->
-	<script src="/js/jquery-3.2.1.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
+	<jsp:include page="../common.jsp" />
+
 </head>
 <body>
 	<!-- 顶栏 -->
@@ -29,21 +25,21 @@
 						</div>
 				    </div>
 				    <div class="panel-body">
-						<form class="form-horizontal" role="form" action="/admin/editTeacher" id="editfrom" method="post">
+						<form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/admin/editTeacher" id="editForm" method="post">
 							  <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label">工号</label>
+							    <label class="col-sm-2 control-label">工号</label>
 							    <div class="col-sm-10">
-							      <input readonly="readonly" type="number" class="form-control" id="inputEmail3" name="userid" placeholder="请输入工号" value="${teacher.userid}">
+							      <input readonly="readonly" type="number" class="form-control" name="userid" placeholder="请输入工号" value="${teacher.userid}">
 							    </div>
 							  </div>
 							  <div class="form-group">
-							    <label for="inputPassword3" class="col-sm-2 control-label">姓名</label>
+							    <label class="col-sm-2 control-label">姓名</label>
 							    <div class="col-sm-10">
-							      <input type="text" class="form-control" id="inputPassword3" name="username" placeholder="请输入姓名" value="${teacher.username}">
+							      <input type="text" class="form-control" name="username" placeholder="请输入姓名" value="${teacher.username}">
 							    </div>
 							  </div>
 							  <div class="form-group">
-							    <label for="inputPassword3" class="col-sm-2 control-label">性别</label>
+							    <label class="col-sm-2 control-label">性别</label>
 							    <div class="col-sm-10">
 								    <label class="checkbox-inline">
 									   	<input type="radio" name="sex" value="男" checked>男
@@ -54,13 +50,13 @@
 							    </div>
 							  </div>
 							  <div class="form-group">
-							    <label for="inputPassword3" class="col-sm-2 control-label">出生年份</label>
+							    <label class="col-sm-2 control-label">出生年份</label>
 							    <div class="col-sm-10">
 								    <input type="date" value="<fmt:formatDate value="${teacher.birthyear}" dateStyle="medium" pattern="yyyy-MM-dd" />" name="birthyear"/>
 							    </div>
 							  </div>
 							  <div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label" name="degree">学历：</label>
+								<label class="col-sm-2 control-label" name="degree">学历：</label>
 								<div class="col-sm-10">
 									<select class="form-control" name="degree" id="degree">
 										<option value="本科">本科</option>
@@ -70,7 +66,7 @@
 								</div>
 							  </div>
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label" name="title" >职称：</label>
+								<label class="col-sm-2 control-label" name="title" >职称：</label>
 								<div class="col-sm-10">
 									<select class="form-control" name="title" id="title">
 										<option value="普通教师">普通教师</option>
@@ -82,13 +78,13 @@
 								</div>
 							</div>
 							  <div class="form-group">
-							    <label for="inputPassword3" class="col-sm-2 control-label" name="grade">入职时间</label>
+							    <label class="col-sm-2 control-label" name="grade">入职时间</label>
 							    <div class="col-sm-10">
 								    <input type="date" value="<fmt:formatDate value="${teacher.grade}" dateStyle="medium" pattern="yyyy-MM-dd" />" name="grade"/>
 							    </div>
 							  </div>
 							  <div class="form-group">
-							    <label for="inputPassword3" class="col-sm-2 control-label" name="grade">所属院系</label>
+							    <label class="col-sm-2 control-label" name="grade">所属院系</label>
 							    <div class="col-sm-10">
 								    <select class="form-control" name="collegeid" id="college">
 										<c:forEach items="${collegeList}" var="item">
@@ -98,7 +94,7 @@
 							    </div>
 							  </div>
 							  <div class="form-group" style="text-align: center">
-								<button class="btn btn-default" type="submit">提交</button>
+								<button class="btn btn-default" type="button" id="submitEditTeacherForm">提交</button>
 								<button class="btn btn-default" type="reset">重置</button>
 							  </div>
 						</form>
@@ -138,6 +134,21 @@
                 titleSelect[i].selected = true;
             }
         }
+
+        $("#submitEditTeacherForm").click(function () {
+            $('#editForm').ajaxSubmit({
+                dateType: 'json',
+                success: function (respText) {
+                    respText = $.parseJSON(respText);
+                    if (respText.msg == "fail"){
+                        alert("教师信息更新失败！请再次尝试更新教师信息！");
+                    }else {
+                        alert("成功更新教师信息！");
+                    }
+                    window.location.href = "${pageContext.request.contextPath}" + respText.page_url;
+                }
+            })
+        })
 
 	</script>
 </html>

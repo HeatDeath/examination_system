@@ -1,8 +1,11 @@
 package com.system.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.util.StringUtil;
 import com.system.exception.CustomException;
 import com.system.mapper.CollegeMapper;
 import com.system.mapper.CourseMapper;
+import com.system.mapper.TeacherCustomMapper;
 import com.system.mapper.TeacherMapper;
 import com.system.po.*;
 import com.system.service.TeacherService;
@@ -27,9 +30,12 @@ public class TeacherServiceImpl implements TeacherService {
     @Autowired
     private CourseMapper courseMapper;
 
+    @Autowired
+    private TeacherCustomMapper teacherCustomMapper;
+
     @Override
-    public void updateById(Integer id, TeacherCustom teacherCustom) throws Exception {
-        teacherMapper.updateByPrimaryKey(teacherCustom);
+    public void updateById(Integer id, Teacher teacher) throws Exception {
+        teacherMapper.updateByPrimaryKey(teacher);
     }
 
     @Override
@@ -82,30 +88,15 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<TeacherCustom> findByName(String name) throws Exception {
+    public List<TeacherCustom> findByName(Teacher teacher, int page, int rows) throws Exception {
         TeacherExample teacherExample = new TeacherExample();
-
-        teacherExample.or().andUsernameLike("%" + name + "%");
-
-        List<Teacher> list = teacherMapper.selectByExample(teacherExample);
-
-        List<TeacherCustom> teacherCustomList = null;
-
-        if (list != null) {
-            teacherCustomList = new ArrayList<TeacherCustom>();
-            for (Teacher t : list) {
-                TeacherCustom teacherCustom = new TeacherCustom();
-                //类拷贝
-                BeanUtils.copyProperties(t, teacherCustom);
-                //获取课程名
-                College college = collegeMapper.selectByPrimaryKey(t.getCollegeid());
-                teacherCustom.setCollegeName(college.getCollegename());
-
-                teacherCustomList.add(teacherCustom);
-            }
+        if (StringUtil.isEmpty(teacher.getUsername())){
+            teacherExample.or().andUsernameLike("%");
+        }else {
+            teacherExample.or().andUsernameLike("%" + teacher.getUsername() + "%");
         }
-
-        return teacherCustomList;
+        PageHelper.startPage(page, rows);
+        return teacherCustomMapper.selectByExample(teacherExample);
     }
 
     // 获取所有教师

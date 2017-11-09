@@ -4,15 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>编辑课程信息</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- 引入bootstrap -->
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
-	<!-- 引入JQuery  bootstrap.js-->
-	<script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
+	<jsp:include page="../common.jsp" />
 
 </head>
 <body>
@@ -118,6 +112,28 @@
 	<script type="text/javascript">
 		$("#nav li:nth-child(1)").addClass("active");
 
+
+        var collegeSelect = $("#college option");
+        for (var i=0; i<collegeSelect.length; i++) {
+            if (collegeSelect[i].value == '${course.collegeid}') {
+                collegeSelect[i].selected = true;
+            }
+        }
+
+        var coursetypeSelect = $("#coursetype option");
+        for (var i=0; i<coursetypeSelect.length; i++) {
+            if (coursetypeSelect[i].value == '${course.coursetype}') {
+                coursetypeSelect[i].selected = true;
+            }
+        }
+
+        var teacheridSelect = $("#teacherid option");
+        for (var i=0; i<teacheridSelect.length; i++) {
+            if (teacheridSelect[i].value == '${course.teacherid}') {
+                teacheridSelect[i].selected = true;
+            }
+        }
+
         $("#submitEditCourseForm").click(function () {
             $('#editForm').ajaxSubmit({
                 dateType: 'json',
@@ -129,7 +145,6 @@
                         alert("成功更新课程信息！");
                     }
                     window.location.href = "${pageContext.request.contextPath}" + respText.page_url;
-
                 }
             })
         })

@@ -15,13 +15,13 @@ import java.util.List;
 public interface StudentService {
 
     //根据id个更新学生信息
-    void updateById(Integer id, StudentCustom studentCustom) throws Exception;
+    void updateById(Integer id, Student student) throws Exception;
 
     //根据id删除学生信息
     void removeById(Integer id) throws Exception;
 
     //保存学生信息
-    Boolean save(StudentCustom studentCustom) throws Exception;
+    Boolean save(Student student) throws Exception;
 
     //获取学生总数
     long getCountStudent() throws Exception;

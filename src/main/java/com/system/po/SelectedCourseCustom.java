@@ -5,7 +5,7 @@ package com.system.po;
  */
 public class SelectedCourseCustom extends SelectedCourse {
     //新增Student 对象字段
-    private StudentCustom studentCustom;
+//    private StudentCustom studentCustom;
 
     //扩展课程信息对象
     private CourseCustom courseCustom;
@@ -22,13 +22,13 @@ public class SelectedCourseCustom extends SelectedCourse {
         this.over = over;
     }
 
-    public StudentCustom getStudentCustom() {
-        return studentCustom;
-    }
+//    public StudentCustom getStudentCustom() {
+//        return studentCustom;
+//    }
 
-    public void setStudentCustom(StudentCustom studentCustom) {
-        this.studentCustom = studentCustom;
-    }
+//    public void setStudentCustom(StudentCustom studentCustom) {
+//        this.studentCustom = studentCustom;
+//    }
 
     public CourseCustom getCouseCustom() {
         return courseCustom;

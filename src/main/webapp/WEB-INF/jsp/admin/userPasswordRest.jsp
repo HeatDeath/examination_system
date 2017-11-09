@@ -4,20 +4,16 @@
 <head>
 	<title></title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- 引入bootstrap -->
-	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-	<!-- 引入JQuery  bootstrap.js-->
-	<script src="/js/jquery-3.2.1.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
+	<jsp:include page="../common.jsp" />
+
 </head>
 <body>
 	<!-- 顶栏 -->
-	<jsp:include page="top.jsp"></jsp:include>
+	<jsp:include page="top.jsp" />
 	<!-- 中间主体 -->
 	<div class="container" id="content">
 		<div class="row">
-			<jsp:include page="menu.jsp"></jsp:include>
+			<jsp:include page="menu.jsp" />
 			<div class="col-md-10">
 				<div class="panel panel-default">
 				    <div class="panel-heading">
@@ -36,13 +32,13 @@
 							  <div class="form-group">
 							    <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
 							    <div class="col-sm-10">
-							      <input type="password" class="form-control" id="inputPassword3" placeholder="请输入密码" name="password">
+							      <input type="password" class="form-control" placeholder="请输入密码" name="password">
 							    </div>
 							  </div>
 							  <div class="form-group">
 							    <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
 							    <div class="col-sm-10">
-							      <input type="password" class="form-control" name="password2" id="inputPassword3" placeholder="请再次输入密码">
+							      <input type="password" class="form-control" name="password2" placeholder="请再次输入密码">
 							    </div>
 							  </div>
 							  <div class="form-group" style="text-align: center">

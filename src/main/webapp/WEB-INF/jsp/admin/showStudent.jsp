@@ -7,13 +7,7 @@
 <head>
 	<title>学生信息显示</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- 引入bootstrap -->
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
-	<!-- 引入JQuery  bootstrap.js-->
-	<script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
+	<jsp:include page="../common.jsp" />
 
 </head>
 <body>
@@ -28,14 +22,14 @@
 				    <div class="panel-heading">
 						<div class="row">
 					    	<h1 class="col-md-5">学生名单管理</h1>
-							<form class="bs-example bs-example-form col-md-5" role="form" style="margin: 20px 0 10px 0;" action="/admin/selectStudent" id="form1" method="post">
+							<form class="bs-example bs-example-form col-md-5" role="form" style="margin: 20px 0 10px 0;" action="${pageContext.request.contextPath}/admin/searchStudent" id="form1" method="post">
 								<div class="input-group">
-									<input type="text" class="form-control" placeholder="请输入姓名" name="findByName">
-									<span class="input-group-addon btn" id="sub">搜索</span>
+									<input type="text" class="form-control" placeholder="请输入姓名" name="username">
+									<span class="input-group-addon btn" id="sub" onclick="$('#form1').submit()">搜索</span>
 								</div>
 							</form>
-							<button class="btn btn-default col-md-2" style="margin-top: 20px" onClick="location.href='/admin/addStudent'">
-								添加用户信息
+							<button class="btn btn-default col-md-2" style="margin-top: 20px" onclick="window.location.href='${pageContext.request.contextPath}/admin/addStudent'">
+								添加学生信息
 								<sapn class="glyphicon glyphicon-plus" />
 							</button>
 
@@ -64,7 +58,7 @@
 									<td>${item.collegeName}</td>
 									<td>
 										<button class="btn btn-default btn-xs btn-info" onClick="location.href='/admin/editStudent?id=${item.userid}'">修改</button>
-										<button class="btn btn-default btn-xs btn-danger btn-primary" onClick="location.href='/admin/removeStudent?id=${item.userid}'">删除</button>
+										<button class="btn btn-default btn-xs btn-danger btn-primary" onClick="confirmPrompt('${item.username}', '${item.userid}')">删除</button>
 										<!--弹出框-->
 									</td>
 								</tr>
@@ -118,14 +112,23 @@
 	<script type="text/javascript">
 		$("#nav li:nth-child(2)").addClass("active");
 
-        function confirmd() {
-            var msg = "您真的确定要删除吗？！";
-            if (confirm(msg)==true){
-                return true;
-            }else{
-                return false;
+        function confirmPrompt(studentName, studentId) {
+            var confirm_msg = "确定要删除 "+ studentName + "(学号:" + studentId +")" + "吗？！";
+            var userChoose = confirm(confirm_msg);
+            console.log("程序执行到 confirmPrompt");
+            if (userChoose == true){
+                var get_url = "${pageContext.request.contextPath}/admin/removeStudent?id=" + studentId;
+                $.get(get_url, function (respText) {
+                    respText = $.parseJSON(respText);
+                    if (respText.msg == "fail"){
+                        alert("课程信息删除失败！请再次尝试删除课程！");
+                    }else {
+                        alert("成功删除课程信息！");
+                        window.location.href = "${pageContext.request.contextPath}/admin/showStudent";
+                    }
+                })
             }
-        };
+        }
 
         $("#sub").click(function () {
             $("#form1").submit();

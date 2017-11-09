@@ -4,22 +4,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>添加学生信息</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- 引入bootstrap -->
-	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-	<!-- 引入JQuery  bootstrap.js-->
-	<script src="/js/jquery-3.2.1.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
+	<jsp:include page="../common.jsp" />
+
 </head>
 <body>
 	<!-- 顶栏 -->
-	<jsp:include page="top.jsp"></jsp:include>
+	<jsp:include page="top.jsp" />
 	<!-- 中间主体 -->
 		<div class="container" id="content">
 		<div class="row">
-			<jsp:include page="menu.jsp"></jsp:include>
+			<jsp:include page="menu.jsp" />
 			<div class="col-md-10">
 				<div class="panel panel-default">
 				    <div class="panel-heading">
@@ -28,27 +24,27 @@
 						</div>
 				    </div>
 				    <div class="panel-body">
-						<form class="form-horizontal" role="form" action="/admin/addStudent" id="editfrom" method="post">
+						<form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/admin/addStudent" id="editForm" method="post">
 							  <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label">学号</label>
+							    <label class="col-sm-2 control-label">学号</label>
 							    <div class="col-sm-10">
-							      <input type="number" class="form-control" id="inputEmail3" name="userid" placeholder="请输入学号"
+							      <input type="number" class="form-control" name="userid" placeholder="请输入学号"
 								  <c:if test='${student!=null}'>
 										 value="${student.userid}"
 								  </c:if>>
 							    </div>
 							  </div>
 							  <div class="form-group">
-							    <label for="inputPassword3" class="col-sm-2 control-label">姓名</label>
+							    <label class="col-sm-2 control-label">姓名</label>
 							    <div class="col-sm-10">
-							      <input type="text" class="form-control" id="inputPassword3" name="username" placeholder="请输入姓名"
+							      <input type="text" class="form-control" name="username" placeholder="请输入姓名"
 								  <c:if test='${student!=null}'>
 										 value="${student.username}"
 								  </c:if>>
 							    </div>
 							  </div>
 							  <div class="form-group">
-							    <label for="inputPassword3" class="col-sm-2 control-label">性别</label>
+							    <label class="col-sm-2 control-label">性别</label>
 							    <div class="col-sm-10">
 								    <label class="checkbox-inline">
 									   	<input type="radio" name="sex" value="男" checked>男
@@ -59,19 +55,19 @@
 							    </div>
 							  </div>
 							  <div class="form-group">
-							    <label for="inputPassword3" class="col-sm-2 control-label">出生年份</label>
+							    <label class="col-sm-2 control-label">出生年份</label>
 							    <div class="col-sm-10">
-								    <input type="date" value="1996-09-02" name="birthyear"/>
+								    <input type="date" value="1979-01-01" name="birthyear"/>
 							    </div>
 							  </div>
 							  <div class="form-group">
-							    <label for="inputPassword3" class="col-sm-2 control-label" name="grade">入学时间</label>
+							    <label class="col-sm-2 control-label" name="grade">入学时间</label>
 							    <div class="col-sm-10">
-								    <input type="date" value="2015-09-02" name="grade"/>
+								    <input type="date" value="2017-09-02" name="grade"/>
 							    </div>
 							  </div>
 							  <div class="form-group">
-							    <label for="inputPassword3" class="col-sm-2 control-label" name="grade">所属院系</label>
+							    <label class="col-sm-2 control-label" name="grade">所属院系</label>
 							    <div class="col-sm-10">
 								    <select class="form-control" name="collegeid">
 										<c:forEach items="${collegeList}" var="item">
@@ -81,7 +77,7 @@
 							    </div>
 							  </div>
 							  <div class="form-group" style="text-align: center">
-								<button class="btn btn-default" type="submit">提交</button>
+								<button class="btn btn-default" type="button" id="submitAddStudentForm">提交</button>
 								<button class="btn btn-default" type="reset">重置</button>
 							  </div>
 						</form>
@@ -100,5 +96,20 @@
 </body>
 	<script type="text/javascript">
 		$("#nav li:nth-child(2)").addClass("active")
+
+        $("#submitAddStudentForm").click(function () {
+            $('#editForm').ajaxSubmit({
+                dateType: 'json',
+                success: function (respText) {
+                    respText = $.parseJSON(respText);
+                    if (respText.msg == "fail"){
+                        alert("学生信息添加失败！请再次尝试添加信息！");
+                    }else {
+                        alert("成功添加学生信息！");
+                    }
+                    window.location.href = "${pageContext.request.contextPath}" + respText.page_url;
+                }
+            })
+        })
 	</script>
 </html>

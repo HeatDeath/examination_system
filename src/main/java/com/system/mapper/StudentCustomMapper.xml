@@ -23,4 +23,61 @@
       student.collegeID = college.collegeID
   </select>
 
+  <!-- 学生已选课信息查询 -->
+  <resultMap id="StudentAndSelectCourseResultMap" type="StudentCustom">
+    <!--
+      property 的值应跟 StudentCustom 的变量名相同
+      column 的值，应与对应的数据库 表字段名相同
+    -->
+    <id column="userID" property="userid"/>
+    <result column="userName" property="username" />
+    <result column="sex" property="sex" />
+    <result column="birthYear" property="birthyear" />
+    <result column="grade" property="grade" />
+    <result column="collegeID" property="collegeid" />
+
+    <!--
+      collection 对联合查询到的多条记录映射到【集合】中
+      property： 将联合查询到的多条信息映射到 SelectedCourseCustom 中对应的属性
+      ofType：映射到 SelectedCourseCustom 中属性类型
+    -->
+    <!-- 一个 StudentCustom 对应多个 SelectedCourseCustom 所以使用 <collection> 集合 -->
+    <collection property="selectedCourseList" ofType="SelectedCourseCustom">
+      <result column="courseID" property="courseid"/>
+      <result column="studentID" property="studentid"/>
+      <result column="mark" property="mark"/>
+      <!--配置映射的关系的课程信息-->
+      <!-- 一个 SelectedCourseCustom 对应一个 CourseCustom 所以使用 <association> 关联 -->
+      <association property="courseCustom" javaType="CourseCustom">
+        <id column="courseID" property="courseid"/>
+        <result column="courseName" property="coursename"/>
+        <result column="teacherID" property="teacherid"/>
+        <result column="courseTime" property="coursetime"/>
+        <result column="classRoom" property="classroom"/>
+        <result column="courseWeek" property="courseweek"/>
+        <result column="courseType" property="coursetype"/>
+        <result column="collegeID" property="collegeid"/>
+        <result column="score" property="score"/>
+      </association>
+    </collection>
+  </resultMap>
+
+  <!-- 对于 student、course、selectedcourse 表进行联合查询 -->
+  <select id="findStudentAndSelectCourseListById" parameterType="int" resultMap="StudentAndSelectCourseResultMap">
+    SELECT
+    student.*,
+    selectedcourse.*,
+    course.*
+    FROM
+    student,
+    selectedcourse,
+    course
+    WHERE
+    student.userID = #{id}
+    AND
+    selectedcourse.studentID = student.userID
+    AND
+    course.courseID = selectedcourse.courseID
+  </select>
+
 </mapper>

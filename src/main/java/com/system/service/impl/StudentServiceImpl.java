@@ -9,6 +9,7 @@ import com.system.po.Student;
 import com.system.po.StudentCustom;
 import com.system.po.StudentExample;
 import com.system.service.StudentService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +29,8 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    public void updateById(Integer id, StudentCustom studentCustom) throws Exception {
-        studentMapper.updateByPrimaryKey(studentCustom);
+    public void updateById(Integer id, Student student) throws Exception {
+        studentMapper.updateByPrimaryKey(student);
     }
 
     @Override
@@ -38,10 +39,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Boolean save(StudentCustom studentCustom) throws Exception {
-        Student student = studentMapper.selectByPrimaryKey(studentCustom.getUserid());
-        if (student == null) {
-            studentMapper.insert(studentCustom);
+    public Boolean save(Student student) throws Exception {
+        Student result = studentMapper.selectByPrimaryKey(student.getUserid());
+        if (result == null) {
+            studentMapper.insert(student);
             return true;
         }
         return false;
@@ -57,16 +58,20 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentCustom findById(Integer id) throws Exception {
-        return (StudentCustom) studentMapper.selectByPrimaryKey(id);
-
+        Student student  = studentMapper.selectByPrimaryKey(id);
+        StudentCustom studentCustom = null;
+        if (student != null) {
+            studentCustom = new StudentCustom();
+            //类拷贝
+            BeanUtils.copyProperties(student, studentCustom);
+        }
+        return studentCustom;
     }
 
     @Override
     public List<StudentCustom> findByName(Student student, int page, int rows) throws Exception {
-//        StudentExample studentExample = new StudentExample();
         String name;
         if (StringUtil.isEmpty(student.getUsername())){
-//            studentExample.or().andUsernameLike("%");
             name = "%";
         }else {
             name = "%" + student.getUsername() + "%";
@@ -75,24 +80,6 @@ public class StudentServiceImpl implements StudentService {
         PageHelper.startPage(page, rows);
 
         return studentCustomMapper.selectByName(name);
-
-//        List<StudentCustom> studentCustomList = null;
-//
-//        if (studentList != null) {
-//            studentCustomList = new ArrayList<>();
-//            for (Student stu : studentList) {
-//                StudentCustom studentCustom = new StudentCustom();
-//
-//                // copy stu 中的属性
-//                BeanUtils.copyProperties(stu, studentCustom);
-//
-//                // 获取并设置学院名称
-//                studentCustom.setCollegeName(collegeMapper.selectByPrimaryKey(stu.getCollegeid()).getCollegename());
-//                studentCustomList.add(studentCustom);
-//            }
-//        }
-//        return studentCustomList;
-//        return studentList;
     }
 
     @Override

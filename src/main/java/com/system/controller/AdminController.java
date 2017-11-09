@@ -43,7 +43,11 @@ public class AdminController {
 //    @Autowired
 //    private UserloginService userloginService;
 
-    // 显示课程信息
+    // -----------------------------------------------------------------------
+    // ---------------------  【课程】管理部分 ---------------------------------
+    // -----------------------------------------------------------------------
+
+    // 显示 or 搜索 课程信息
     @RequestMapping(value = {"/showCourse", "/searchCourse"})
     public ModelAndView showCourse(Course course,
                                    @RequestParam(required = false, defaultValue = "1") int page) throws Exception{
@@ -57,30 +61,6 @@ public class AdminController {
 
         return result;
     }
-
-//    // 显示课程信息
-//    @ResponseBody
-//    @RequestMapping(value = {"/searchCourse",
-//                             "/searchCourse/page/{page}",
-//                             "/searchCourse/{coursename}/page/{page}"})
-//    public String searchCourse(@PathVariable String coursename, @PathVariable int page) throws Exception{
-//
-//        Course course = new Course();
-//        course.setCoursename(coursename);
-//
-//        List<Course> courseList = courseService.selectCourseByName(course, page, ROWS);
-//        // 获取课程数量
-//        Long courseCount = courseService.getCountCourse();
-//
-//        Map<String, Object> resultMap = new HashMap<>();
-//        resultMap.put("pageInfo", new PageInfo<Course>(courseList));
-//        resultMap.put("page", page);
-//        resultMap.put("rows", ROWS);
-//        resultMap.put("queryParam", course);
-//        resultMap.put("courseCount", courseCount);
-//
-//        return JSON.toJSONString(resultMap);
-//    }
 
     // 添加课程 页面跳转
     @RequestMapping(value = "/addCourse", method = RequestMethod.GET)
@@ -113,12 +93,7 @@ public class AdminController {
     // 编辑课程信息 页面跳转
     @RequestMapping(value = "/editCourse", method = RequestMethod.GET)
     public ModelAndView editCourse(@RequestParam("id") int courseId) throws Exception{
-//        Map<String, Object> resultMap = new HashMap<>();
         CourseCustom courseCustom = courseService.findById(courseId);
-//        if (courseCustom == null){
-//            resultMap.put("msg", "请输入正确的课程号！");
-//            return JSON.toJSONString(resultMap);
-//        }
         List<Teacher> teacherList = teacherService.findAll();
         List<College> collegeList = collegeService.finAll();
         ModelAndView result = new ModelAndView();
@@ -126,8 +101,6 @@ public class AdminController {
         result.addObject("teacherList", teacherList);
         result.addObject("collegeList", collegeList);
         result.addObject("course", courseCustom);
-//        resultMap.put("teacherList", teacherList);
-//        resultMap.put("collegeList", collegeList);
         return result;
     }
 
@@ -175,19 +148,176 @@ public class AdminController {
     }
 
     // -----------------------------------------------------------------------
+    // ---------------------  【学生】管理部分 ---------------------------------
+    // -----------------------------------------------------------------------
 
-    // 显示学生信息
-    @RequestMapping(value = "/showStudent")
+    // 显示 or 搜索 学生信息
+    @RequestMapping(value = {"/showStudent", "/searchStudent"})
     public ModelAndView showStudent(Student student,
                                     @RequestParam(required = false, defaultValue = "1") int page) throws Exception {
         ModelAndView result = new ModelAndView("/admin/showStudent");
         List<StudentCustom> studentList = studentService.findByName(student, page, ROWS);
-
         result.addObject("pageInfo", new PageInfo<StudentCustom>(studentList));
         result.addObject("page", page);
         result.addObject("rows", ROWS);
         result.addObject("queryParam", student);
-
         return result;
     }
+
+    // 添加学生信息 页面跳转
+    @RequestMapping(value = "/addStudent", method = RequestMethod.GET)
+    public ModelAndView addStudent() throws Exception{
+        // 找出所有学院
+        List<College> collegeList = collegeService.finAll();
+        ModelAndView modelAndView = new ModelAndView("/admin/addStudent");
+        modelAndView.addObject("collegeList", collegeList);
+        return modelAndView;
+    }
+
+    // 添加学生信息 表单处理
+    @ResponseBody
+    @RequestMapping(value = "/addStudent", method = RequestMethod.POST)
+    public String doAddStudent(StudentCustom studentCustom) throws Exception{
+        Boolean result = studentService.save(studentCustom);
+        Map<String, Object> resultMap = new HashMap<>();
+        if (result){
+            resultMap.put("msg", "success");
+            resultMap.put("page_url", "/admin/showStudent");
+        }else {
+            resultMap.put("msg", "fail");
+            resultMap.put("page_url", "/admin/addStudent");
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    // 编辑学生信息 页面跳转
+    @RequestMapping(value = "/editStudent", method = RequestMethod.GET)
+    public ModelAndView editStudent(@RequestParam("id") int studentId) throws Exception{
+        StudentCustom studentCustom = studentService.findById(studentId);
+        List<College> collegeList = collegeService.finAll();
+        ModelAndView result = new ModelAndView();
+        result.setViewName("/admin/editStudent");
+        result.addObject("student", studentCustom);
+        result.addObject("collegeList", collegeList);
+        return result;
+    }
+
+    // 编辑学生信息 表单处理
+    @ResponseBody
+    @RequestMapping(value = "/editStudent", method = RequestMethod.POST)
+    public String doEditStudent(Student student) throws Exception{
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            studentService.updateById(student.getUserid(), student);
+            resultMap.put("msg", "success");
+            resultMap.put("page_url", "/admin/showStudent");
+        }catch (Exception e){
+            resultMap.put("msg", "fail");
+            resultMap.put("page_url", "/admin/editStudent?id=" + student.getUserid());
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    // 删除学生
+    @ResponseBody
+    @RequestMapping(value = "/removeStudent", method = RequestMethod.GET)
+    public String removeStudent(@RequestParam("id") int studentId) throws Exception{
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            studentService.removeById(studentId);
+            resultMap.put("msg", "success");
+        }catch (Exception e){
+            resultMap.put("msg", "fail");
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    // -----------------------------------------------------------------------
+    // ---------------------  【教师】管理部分 ---------------------------------
+    // -----------------------------------------------------------------------
+
+    // 显示 or 搜索 教师信息
+    @RequestMapping(value = {"/showTeacher", "/searchTeacher"})
+    public ModelAndView showStudent(Teacher teacher,
+                                    @RequestParam(required = false, defaultValue = "1") int page) throws Exception {
+        ModelAndView result = new ModelAndView("/admin/showTeacher");
+        List<TeacherCustom> teacherCustomList = teacherService.findByName(teacher, page, ROWS);
+        result.addObject("pageInfo", new PageInfo<TeacherCustom>(teacherCustomList));
+        result.addObject("page", page);
+        result.addObject("rows", ROWS);
+        result.addObject("queryParam", teacher);
+        return result;
+    }
+
+    // 添加教师信息 页面跳转
+    @RequestMapping(value = "/addTeacher", method = RequestMethod.GET)
+    public ModelAndView addTeacher() throws Exception{
+        // 找出所有学院
+        List<College> collegeList = collegeService.finAll();
+        ModelAndView modelAndView = new ModelAndView("/admin/addTeacher");
+        modelAndView.addObject("collegeList", collegeList);
+        return modelAndView;
+    }
+
+    // 添加教师信息 表单处理
+    @ResponseBody
+    @RequestMapping(value = "/addTeacher", method = RequestMethod.POST)
+    public String doAddTeacher(TeacherCustom teacherCustomW) throws Exception{
+        Boolean result = teacherService.save(teacherCustomW);
+        Map<String, Object> resultMap = new HashMap<>();
+        if (result){
+            resultMap.put("msg", "success");
+            resultMap.put("page_url", "/admin/showTeacher");
+        }else {
+            resultMap.put("msg", "fail");
+            resultMap.put("page_url", "/admin/showTeacher");
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    // 编辑教师信息 页面跳转
+    @RequestMapping(value = "/editTeacher", method = RequestMethod.GET)
+    public ModelAndView editTeacher(@RequestParam("id") int teacherId) throws Exception{
+        TeacherCustom teacherCustom = teacherService.findById(teacherId);
+        List<College> collegeList = collegeService.finAll();
+        ModelAndView result = new ModelAndView();
+        result.setViewName("/admin/editTeacher");
+        result.addObject("teacher", teacherCustom);
+        result.addObject("collegeList", collegeList);
+        return result;
+    }
+
+    // 编辑教师信息 表单处理
+    @ResponseBody
+    @RequestMapping(value = "/editTeacher", method = RequestMethod.POST)
+    public String doEditTeacher(Teacher teacher) throws Exception{
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            teacherService.updateById(teacher.getUserid(), teacher);
+            resultMap.put("msg", "success");
+            resultMap.put("page_url", "/admin/showTeacher");
+        }catch (Exception e){
+            resultMap.put("msg", "fail");
+            resultMap.put("page_url", "/admin/editTeacher?id=" + teacher.getUserid());
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    // 删除教师
+    @ResponseBody
+    @RequestMapping(value = "/removeTeacher", method = RequestMethod.GET)
+    public String removeTeacher(@RequestParam("id") int teacherId) throws Exception{
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            teacherService.removeById(teacherId);
+            resultMap.put("msg", "success");
+        }catch (Exception e){
+            resultMap.put("msg", "fail");
+        }
+        return JSON.toJSONString(resultMap);
+    }
+    
+    
+
+
 }
