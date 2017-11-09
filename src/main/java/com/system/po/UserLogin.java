@@ -9,6 +9,16 @@ public class UserLogin {
 
     private Integer role;
 
+//    public UserLogin() {
+//    }
+//
+//    public UserLogin(Integer userid, String username, String password, Integer role) {
+//        this.userid = userid;
+//        this.username = username;
+//        this.password = password;
+//        this.role = role;
+//    }
+
     public Integer getUserid() {
         return userid;
     }

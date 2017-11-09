@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.system.po.*;
-import com.system.service.CollegeService;
-import com.system.service.CourseService;
-import com.system.service.StudentService;
-import com.system.service.TeacherService;
+import com.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +22,14 @@ import java.util.Map;
 //@SessionAttributes({"courseCount", "studentCount"})
 @RequestMapping("/admin")
 public class AdminController {
-
-    private static final  int ROWS = 2;
+    // 分页行数
+    private static final int ROWS = 2;
+    // 默认初始密码
+    private static final String DEFAULT_PASSWORD = "123";
+    // 学生角色编号
+    private static final Integer STUDENT_ROLE = 2;
+    // 教师角色编号
+    private static final Integer TEACHER_ROLE = 1;
 
     @Autowired
     private StudentService studentService;
@@ -39,9 +42,9 @@ public class AdminController {
 
     @Autowired
     private CollegeService collegeService;
-//
-//    @Autowired
-//    private UserloginService userloginService;
+
+    @Autowired
+    private UserLoginService userLoginService;
 
     // -----------------------------------------------------------------------
     // ---------------------  【课程】管理部分 ---------------------------------
@@ -52,13 +55,12 @@ public class AdminController {
     public ModelAndView showCourse(Course course,
                                    @RequestParam(required = false, defaultValue = "1") int page) throws Exception{
         ModelAndView result = new ModelAndView("/admin/showCourse");
+        // 获取指定的课程 list
         List<Course> courseList = courseService.selectCourseByName(course, page, ROWS);
-
         result.addObject("pageInfo", new PageInfo<Course>(courseList));
         result.addObject("page", page);
         result.addObject("rows", ROWS);
         result.addObject("queryParam", course);
-
         return result;
     }
 
@@ -66,6 +68,7 @@ public class AdminController {
     @RequestMapping(value = "/addCourse", method = RequestMethod.GET)
     public ModelAndView addCourse() throws Exception{
         ModelAndView result = new ModelAndView("/admin/addCourse");
+        // 将 teacherList 和 collegeList 添加到 数据模型 Model 中
         result.addObject("teacherList", teacherService.findAll());
         result.addObject("collegeList", collegeService.finAll());
         return result;
@@ -75,7 +78,7 @@ public class AdminController {
     @ResponseBody
     @RequestMapping(value = "/addCourse", method = RequestMethod.POST)
     public String doAddCourse(CourseCustom courseCustom) throws Exception{
-
+        // 保存新添加的课程的结果
         Boolean result = courseService.save(courseCustom);
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -85,7 +88,6 @@ public class AdminController {
         }else {
             resultMap.put("msg", "fail");
             resultMap.put("page_url", "/admin/addCourse");
-
         }
         return JSON.toJSONString(resultMap);
     }
@@ -93,8 +95,11 @@ public class AdminController {
     // 编辑课程信息 页面跳转
     @RequestMapping(value = "/editCourse", method = RequestMethod.GET)
     public ModelAndView editCourse(@RequestParam("id") int courseId) throws Exception{
+        // 通过 courseId 找到对应的 CourseCustom
         CourseCustom courseCustom = courseService.findById(courseId);
+        // 找到全部的教师
         List<Teacher> teacherList = teacherService.findAll();
+        // 找到全部的学院
         List<College> collegeList = collegeService.finAll();
         ModelAndView result = new ModelAndView();
         result.setViewName("/admin/editCourse");
@@ -116,7 +121,7 @@ public class AdminController {
             resultMap.put("msg", "success");
             resultMap.put("page_url", "/admin/showCourse");
 
-            // 更新失败的话，alert 提示信息，返回课程编辑页面
+        // 更新失败的话，alert 提示信息，返回课程编辑页面
         }catch (Exception e){
             resultMap.put("msg", "fail");
             resultMap.put("page_url", "/admin/editCourse?id=" + course.getCourseid());
@@ -183,6 +188,13 @@ public class AdminController {
         if (result){
             resultMap.put("msg", "success");
             resultMap.put("page_url", "/admin/showStudent");
+            // 保存新添加的学生信息到 UserLogin 表
+            UserLogin userLogin = new UserLogin();
+            userLogin.setUserid(studentCustom.getUserid());
+            userLogin.setUsername(studentCustom.getUsername());
+            userLogin.setPassword(DEFAULT_PASSWORD);
+            userLogin.setRole(STUDENT_ROLE);
+            userLoginService.save(userLogin);
         }else {
             resultMap.put("msg", "fail");
             resultMap.put("page_url", "/admin/addStudent");
@@ -262,12 +274,19 @@ public class AdminController {
     // 添加教师信息 表单处理
     @ResponseBody
     @RequestMapping(value = "/addTeacher", method = RequestMethod.POST)
-    public String doAddTeacher(TeacherCustom teacherCustomW) throws Exception{
-        Boolean result = teacherService.save(teacherCustomW);
+    public String doAddTeacher(TeacherCustom teacherCustom) throws Exception{
+        Boolean result = teacherService.save(teacherCustom);
         Map<String, Object> resultMap = new HashMap<>();
         if (result){
             resultMap.put("msg", "success");
             resultMap.put("page_url", "/admin/showTeacher");
+            // 保存新添加的教师信息到 UserLogin 表
+            UserLogin userLogin = new UserLogin();
+            userLogin.setUserid(teacherCustom.getUserid());
+            userLogin.setPassword(teacherCustom.getUsername());
+            userLogin.setPassword(DEFAULT_PASSWORD);
+            userLogin.setRole(TEACHER_ROLE);
+            userLoginService.save(userLogin);
         }else {
             resultMap.put("msg", "fail");
             resultMap.put("page_url", "/admin/showTeacher");
@@ -316,8 +335,42 @@ public class AdminController {
         }
         return JSON.toJSONString(resultMap);
     }
-    
-    
 
+    // -----------------------------------------------------------------------
+    // ---------------------  【密码】修改重置 部分 -----------------------------
+    // -----------------------------------------------------------------------
 
+    // 重置普通用户密码 页面跳转
+    @RequestMapping(value = "/userPasswordReset", method = RequestMethod.GET)
+    public String userPasswordReset() throws Exception{
+        return "admin/userPasswordReset";
+    }
+
+    // 重置普通用户密码 表单处理
+    @ResponseBody
+    @RequestMapping(value = "/userPasswordReset", method = RequestMethod.POST)
+    public String doUserPasswordReset(UserLogin userLogin) throws Exception{
+        UserLogin getUser = userLoginService.findByName(userLogin.getUsername());
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("page_url", "/admin/userPasswordReset");
+
+        if (getUser != null){
+            if (getUser.getRole() == 0){
+                resultMap.put("msg", "该账户为管理员账户！");
+            }else {
+                getUser.setPassword(userLogin.getPassword());
+                userLoginService.updateByName(userLogin.getUsername(), getUser);
+                resultMap.put("msg", "成功修改用户的账户密码~");
+            }
+        }else {
+            resultMap.put("msg", "没有找到该用户！");
+        }
+        return JSON.toJSONString(resultMap);
+    }
+
+    // 重置管理员账户密码 页面跳转
+    @RequestMapping(value = "/passwordReset", method = RequestMethod.GET)
+    public String passwordReset() throws Exception{
+        return "admin/passwordReset";
+    }
 }
