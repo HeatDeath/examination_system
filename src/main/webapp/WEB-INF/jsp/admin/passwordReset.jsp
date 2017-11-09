@@ -23,7 +23,7 @@
                 </div>
                 <div class="panel-body">
                     <form name="reset" class="form-horizontal" role="form"
-                          action="${pageContext.request.contextPath}/passwordReset" id="editForm" method="post">
+                          action="${basePath}/passwordReset" id="editForm" method="post">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">旧密码</label>
                             <div class="col-sm-10">
@@ -79,7 +79,7 @@
             success: function (respText) {
                 respText = $.parseJSON(respText);
                 alert(respText.msg);
-                window.location.href = "${pageContext.request.contextPath}" + respText.page_url;
+                window.location.href = "${basePath}" + respText.page_url;
             }
         })
     })

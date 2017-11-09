@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TeacherCustomMapper {
 
-    //分页查询学生信息
+    //分页查询教师信息
     List<TeacherCustom> selectByExample(TeacherExample example);
 }

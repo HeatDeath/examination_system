@@ -3,6 +3,7 @@ package com.system.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
 import com.system.mapper.CollegeMapper;
+import com.system.mapper.CourseCustomMapper;
 import com.system.mapper.CourseMapper;
 import com.system.mapper.SelectedCourseMapper;
 import com.system.po.*;
@@ -25,6 +26,9 @@ public class CourseServiceImpl implements CourseService{
 
     @Autowired
     private SelectedCourseMapper selectedCourseMapper;
+
+    @Autowired
+    private CourseCustomMapper courseCustomMapper;
 
     @Override
     public void updateByPrimaryKey(Course course) throws Exception {
@@ -118,30 +122,8 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public List<CourseCustom> findByTeacherID(Integer id) throws Exception {
-        CourseExample courseExample = new CourseExample();
-        //自定义查询条件
-        CourseExample.Criteria criteria = courseExample.createCriteria();
-        //根据教师id查课程
-        criteria.andTeacheridEqualTo(id);
-
-        List<Course> list = courseMapper.selectByExample(courseExample);
-        List<CourseCustom> courseCustomList = null;
-
-        if (list.size() > 0) {
-            courseCustomList = new ArrayList<CourseCustom>();
-            for (Course c : list) {
-                CourseCustom courseCustom = new CourseCustom();
-                //类拷贝
-                BeanUtils.copyProperties(courseCustom, c);
-                //获取课程名
-                College college = collegeMapper.selectByPrimaryKey(c.getCollegeid());
-                courseCustom.setCollegeName(college.getCollegename());
-
-                courseCustomList.add(courseCustom);
-            }
-        }
-
-        return courseCustomList;
+    public List<CourseCustom> findByTeacherID(Integer id, int page, int rows) throws Exception {
+        PageHelper.startPage(page, rows);
+        return courseCustomMapper.selectByTeacherId(id);
     }
 }

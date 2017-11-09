@@ -25,7 +25,7 @@ public interface CourseService {
     List<CourseCustom> findByName(String name) throws Exception;
 
     //根据教师id查找课程
-    List<CourseCustom> findByTeacherID(Integer id) throws Exception;
+    List<CourseCustom> findByTeacherID(Integer id, int page, int rows) throws Exception;
 
     // 根据条件分页查询
     List<Course> selectCourseByName(Course course, int page, int rows);

@@ -22,7 +22,7 @@
 				    <div class="panel-heading">
 						<div class="row">
 					    	<h1 class="col-md-5">教师名单管理</h1>
-							<form class="bs-example bs-example-form col-md-5" role="form" style="margin: 20px 0 10px 0;" action="${pageContext.request.contextPath}/admin/searchTeacher" id="form1" method="post">
+							<form class="bs-example bs-example-form col-md-5" role="form" style="margin: 20px 0 10px 0;" action="${basePath}/admin/searchTeacher" id="form1" method="post">
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="请输入姓名" name="findByName">
 									<span class="input-group-addon btn" onclick="$('#form1').submit()" id="sub">搜索</span>
@@ -76,7 +76,7 @@
 									<%-- 上一页 --%>
 									<c:if test="${pageInfo.hasPreviousPage}">
 										<li>
-											<a href="${pageContext.request.contextPath}/admin/showTeacher?page=${pageInfo.prePage}&username=${queryParam.username}">&laquo;上一页</a>
+											<a href="${basePath}/admin/showTeacher?page=${pageInfo.prePage}&username=${queryParam.username}">&laquo;上一页</a>
 										</li>
 									</c:if>
 
@@ -88,14 +88,14 @@
 										</c:if>
 										<c:if test="${nav != pageInfo.pageNum}">
 											<li>
-												<a href="${pageContext.request.contextPath}/admin/showTeacher?page=${nav}&username=${queryParam.username}">${nav}</a>
+												<a href="${basePath}/admin/showTeacher?page=${nav}&username=${queryParam.username}">${nav}</a>
 											</li>
 										</c:if>
 									</c:forEach>
 
 									<%-- 下一页 --%>
 									<c:if test="${pageInfo.hasNextPage}">
-										<li><a href="${pageContext.request.contextPath}/admin/showTeacher?page=${pageInfo.nextPage}&username=${queryParam.username}">下一页&raquo;</a></li>
+										<li><a href="${basePath}/admin/showTeacher?page=${pageInfo.nextPage}&username=${queryParam.username}">下一页&raquo;</a></li>
 									</c:if>
 
 								</ul>
@@ -121,14 +121,14 @@
             var userChoose = confirm(confirm_msg);
             console.log("程序执行到 confirmPrompt");
             if (userChoose == true){
-                var get_url = "${pageContext.request.contextPath}/admin/removeTeacher?id=" + userId;
+                var get_url = "${basePath}/admin/removeTeacher?id=" + userId;
                 $.get(get_url, function (respText) {
                     respText = $.parseJSON(respText);
                     if (respText.msg == "fail"){
                         alert("教师信息删除失败！请再次尝试删除教师！");
                     }else {
                         alert("成功删除教师信息！");
-                        window.location.href = "${pageContext.request.contextPath}/admin/showTeacher";
+                        window.location.href = "${basePath}/admin/showTeacher";
                     }
                 })
             }

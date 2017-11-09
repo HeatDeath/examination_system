@@ -24,7 +24,7 @@
 					</div>
 				</div>
 				<div class="panel-body">
-					<form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/admin/addCourse" id="editForm" method="post">
+					<form class="form-horizontal" role="form" action="${basePath}/admin/addCourse" id="editForm" method="post">
 						<div class="form-group">
 							<label class="col-sm-2 control-label">课程号</label>
 							<div class="col-sm-10">
@@ -122,7 +122,7 @@
 				}else {
                     alert("成功添加课程！");
                 }
-                window.location.href = "${pageContext.request.contextPath}" + respText.page_url;
+                window.location.href = "${basePath}" + respText.page_url;
 
             }
 		})

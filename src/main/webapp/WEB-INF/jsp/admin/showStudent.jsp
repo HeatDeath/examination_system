@@ -22,13 +22,13 @@
 				    <div class="panel-heading">
 						<div class="row">
 					    	<h1 class="col-md-5">学生名单管理</h1>
-							<form class="bs-example bs-example-form col-md-5" role="form" style="margin: 20px 0 10px 0;" action="${pageContext.request.contextPath}/admin/searchStudent" id="form1" method="post">
+							<form class="bs-example bs-example-form col-md-5" role="form" style="margin: 20px 0 10px 0;" action="${basePath}/admin/searchStudent" id="form1" method="post">
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="请输入姓名" name="username">
 									<span class="input-group-addon btn" id="sub" onclick="$('#form1').submit()">搜索</span>
 								</div>
 							</form>
-							<button class="btn btn-default col-md-2" style="margin-top: 20px" onclick="window.location.href='${pageContext.request.contextPath}/admin/addStudent'">
+							<button class="btn btn-default col-md-2" style="margin-top: 20px" onclick="window.location.href='${basePath}/admin/addStudent'">
 								添加学生信息
 								<sapn class="glyphicon glyphicon-plus" />
 							</button>
@@ -72,7 +72,7 @@
 										<%-- 上一页 --%>
 									<c:if test="${pageInfo.hasPreviousPage}">
 										<li>
-											<a href="${pageContext.request.contextPath}/admin/showStudent?page=${pageInfo.prePage}&username=${queryParam.username}">&laquo;上一页</a>
+											<a href="${basePath}/admin/showStudent?page=${pageInfo.prePage}&username=${queryParam.username}">&laquo;上一页</a>
 										</li>
 									</c:if>
 
@@ -84,14 +84,14 @@
 										</c:if>
 										<c:if test="${nav != pageInfo.pageNum}">
 											<li>
-												<a href="${pageContext.request.contextPath}/admin/showStudent?page=${nav}&username=${queryParam.username}">${nav}</a>
+												<a href="${basePath}/admin/showStudent?page=${nav}&username=${queryParam.username}">${nav}</a>
 											</li>
 										</c:if>
 									</c:forEach>
 
 										<%-- 下一页 --%>
 									<c:if test="${pageInfo.hasNextPage}">
-										<li><a href="${pageContext.request.contextPath}/admin/showStudent?page=${pageInfo.nextPage}&username=${queryParam.username}">下一页&raquo;</a></li>
+										<li><a href="${basePath}/admin/showStudent?page=${pageInfo.nextPage}&username=${queryParam.username}">下一页&raquo;</a></li>
 									</c:if>
 
 								</ul>
@@ -117,14 +117,14 @@
             var userChoose = confirm(confirm_msg);
             console.log("程序执行到 confirmPrompt");
             if (userChoose == true){
-                var get_url = "${pageContext.request.contextPath}/admin/removeStudent?id=" + studentId;
+                var get_url = "${basePath}/admin/removeStudent?id=" + studentId;
                 $.get(get_url, function (respText) {
                     respText = $.parseJSON(respText);
                     if (respText.msg == "fail"){
                         alert("课程信息删除失败！请再次尝试删除课程！");
                     }else {
                         alert("成功删除课程信息！");
-                        window.location.href = "${pageContext.request.contextPath}/admin/showStudent";
+                        window.location.href = "${basePath}/admin/showStudent";
                     }
                 })
             }

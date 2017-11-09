@@ -24,7 +24,7 @@
 					    	<h1 class="col-md-5">课程名单管理</h1>
 
 
-							<form class="bs-example bs-example-form col-md-5" role="form" style="margin: 20px 0 10px 0;" action="${pageContext.request.contextPath}/admin/searchCourse" id="form1" method="post">
+							<form class="bs-example bs-example-form col-md-5" role="form" style="margin: 20px 0 10px 0;" action="${basePath}/admin/searchCourse" id="form1" method="post">
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="请输入课程名称" name="coursename">
 									<%--<input type="hidden" name="page" value="1">--%>
@@ -81,14 +81,14 @@
 									<%--&lt;%&ndash; 首页 &ndash;%&gt;--%>
 									<%--<c:if test="${pageInfo.firstPage!=null}">--%>
 										<%--<li>--%>
-											<%--<a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.firstPage}&coursename=${queryParam.coursename}">首页</a>--%>
+											<%--<a href="${basePath}/admin/showCourse?page=${pageInfo.firstPage}&coursename=${queryParam.coursename}">首页</a>--%>
 										<%--</li>--%>
 									<%--</c:if>--%>
 
 									<%-- 上一页 --%>
 									<c:if test="${pageInfo.hasPreviousPage}">
 										<li>
-											<a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.prePage}&coursename=${queryParam.coursename}">&laquo;上一页</a>
+											<a href="${basePath}/admin/showCourse?page=${pageInfo.prePage}&coursename=${queryParam.coursename}">&laquo;上一页</a>
 										</li>
 									</c:if>
 
@@ -100,20 +100,20 @@
 										</c:if>
 										<c:if test="${nav != pageInfo.pageNum}">
 											<li>
-												<a href="${pageContext.request.contextPath}/admin/showCourse?page=${nav}&coursename=${queryParam.coursename}">${nav}</a>
+												<a href="${basePath}/admin/showCourse?page=${nav}&coursename=${queryParam.coursename}">${nav}</a>
 											</li>
 										</c:if>
 									</c:forEach>
 
 									<%-- 下一页 --%>
 									<c:if test="${pageInfo.hasNextPage}">
-										<li><a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.nextPage}&coursename=${queryParam.coursename}">下一页&raquo;</a></li>
+										<li><a href="${basePath}/admin/showCourse?page=${pageInfo.nextPage}&coursename=${queryParam.coursename}">下一页&raquo;</a></li>
 									</c:if>
 
 									<%--&lt;%&ndash; 末页 &ndash;%&gt;--%>
 									<%--<c:if test="${pageInfo.firstPage!=null}">--%>
 										<%--<li>--%>
-											<%--<a href="${pageContext.request.contextPath}/admin/showCourse?page=${pageInfo.lastPage}&coursename=${queryParam.coursename}">最后一页</a>--%>
+											<%--<a href="${basePath}/admin/showCourse?page=${pageInfo.lastPage}&coursename=${queryParam.coursename}">最后一页</a>--%>
 										<%--</li>--%>
 									<%--</c:if>--%>
 								</ul>
@@ -139,14 +139,14 @@
             var userChoose = confirm(confirm_msg);
             console.log("程序执行到 confirmPrompt");
             if (userChoose == true){
-                var get_url = "${pageContext.request.contextPath}/admin/removeCourse?id=" + courseId;
+                var get_url = "${basePath}/admin/removeCourse?id=" + courseId;
                 $.get(get_url, function (respText) {
                     respText = $.parseJSON(respText);
                     if (respText.msg == "fail"){
                         alert("课程信息删除失败！请再次尝试删除课程！");
                     }else {
                         alert("成功删除课程信息！");
-                        window.location.href = "${pageContext.request.contextPath}/admin/showCourse";
+                        window.location.href = "${basePath}/admin/showCourse";
                     }
                 })
 			}
