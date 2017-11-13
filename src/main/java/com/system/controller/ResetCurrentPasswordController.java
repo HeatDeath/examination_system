@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 @Controller
-public class ResetMyPasswordController {
+public class ResetCurrentPasswordController {
     @Autowired
     private UserLoginService userLoginService;
 
@@ -33,7 +33,7 @@ public class ResetMyPasswordController {
 
         if(!oldPassword.equals(userLogin.getPassword())){
             resultMap.put("msg", "旧密码错误！");
-            resultMap.put("page_url", "/admin/passwordReset");
+            resultMap.put("page_url", "");
         }else {
             userLogin.setPassword(newPassword);
             userLoginService.updateByName(username, userLogin);

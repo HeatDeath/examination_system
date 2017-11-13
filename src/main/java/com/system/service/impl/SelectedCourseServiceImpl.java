@@ -1,5 +1,7 @@
 package com.system.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.system.mapper.SelectedCourseCustomMapper;
 import com.system.mapper.SelectedCourseMapper;
 import com.system.mapper.StudentMapper;
 import com.system.po.*;
@@ -21,38 +23,33 @@ public class SelectedCourseServiceImpl implements SelectedCourseService {
     private SelectedCourseMapper selectedCourseMapper;
 
     @Autowired
+    private SelectedCourseCustomMapper selectedCourseCustomMapper;
+
+    @Autowired
     private StudentMapper studentMapper;
 
     @Override
-    public List<SelectedCourseCustom> findByCourseID(Integer id) throws Exception {
+    public List<SelectedCourseCustom> findByCourseID(Integer id, int page, int rows) throws Exception {
 
-        SelectedCourseExample selectedCourseExample = new SelectedCourseExample();
-        selectedCourseExample.or().andCourseidEqualTo(id);
+//        SelectedCourseExample selectedCourseExample = new SelectedCourseExample();
+//        selectedCourseExample.or().andCourseidEqualTo(id);
 
-        List<SelectedCourse> list = selectedCourseMapper.selectByExample(selectedCourseExample);
-        List<SelectedCourseCustom> secList = new ArrayList<SelectedCourseCustom>();
-        for (SelectedCourse s: list) {
-            SelectedCourseCustom sec = new SelectedCourseCustom();
-            BeanUtils.copyProperties(s, sec);
+        PageHelper.startPage(page, rows);
+        List<SelectedCourseCustom> list = selectedCourseCustomMapper.selectByCourseID(id);
+
+        for (SelectedCourseCustom s: list) {
+
             //判断是否完成类该课程
-            if (sec.getMark() != null) {
-                sec.setOver(true);
+            if (s.getMark() != null) {
+                s.setOver(true);
+            }else {
+                s.setOver(false);
             }
-            Student student = studentMapper.selectByPrimaryKey(sec.getStudentid());
-            StudentCustom studentCustom = new StudentCustom();
-            BeanUtils.copyProperties(student, studentCustom);
 
-            sec.setStudentCustom(studentCustom);
-
-            secList.add(sec);
         }
 
-        return secList;
+        return list;
     }
-
-//    public List<SelectedCourseCustom> findByCourseIDPaging(Integer page, Integer id) throws Exception {
-//        return null;
-//    }
     
     //获取该课程学生数
     @Override

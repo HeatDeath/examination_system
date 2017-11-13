@@ -75,8 +75,21 @@
         }
     }
 
-//    $("#submitForm").ajaxSubmit();
 
+    $("#submitForm").click(function () {
+        $('#editForm').ajaxSubmit({
+            dateType: 'json',
+            success: function (respText) {
+                respText = $.parseJSON(respText);
+                if (respText.msg == "fail"){
+                    alert("成绩录入失败！请再次尝试录入成绩！");
+                }else {
+                    alert("成功录入学生成绩！");
+                }
+                window.location.href = "${basePath}" + respText.page_url;
+            }
+        })
+    })
 
 </script>
 </html>

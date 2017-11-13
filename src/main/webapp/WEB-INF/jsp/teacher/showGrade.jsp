@@ -34,14 +34,14 @@
 					            </tr>
 					        </thead>
 					        <tbody>
-								<c:forEach items="${selectedCourseList}" var="item">
+								<c:forEach items="${pageInfo.list}" var="item">
 									<tr>
 										<td>${item.studentCustom.userid}</td>
 										<td>${item.studentCustom.username}</td>
 										<c:if test="${!item.over}">
 											<td>未打分</td>
 											<td>
-												<button class="btn btn-default btn-xs btn-info" onClick="location.href='/teacher/mark?studentid=${item.studentid}&courseid=${item.courseid}'">打分</button>
+												<button class="btn btn-default btn-xs btn-info" onClick="window.location.href='/teacher/mark?studentid=${item.studentid}&courseid=${item.courseid}'">打分</button>
 											</td>
 										</c:if>
 										<c:if test="${item.over}">
@@ -53,24 +53,35 @@
 					        </tbody>
 				    </table>
 				    <div class="panel-footer">
-						<c:if test="${pagingVO != null}">
+						<c:if test="${page!=null}">
 							<nav style="text-align: center">
 								<ul class="pagination">
-									<li><a href="/student/showCourse?page=${pagingVO.upPageNo}">&laquo;上一页</a></li>
-									<li class="active"><a href="">${pagingVO.curentPageNo}</a></li>
-									<c:if test="${pagingVO.curentPageNo+1 <= pagingVO.totalCount}">
-										<li><a href="/student/showCourse?page=${pagingVO.curentPageNo+1}">${pagingVO.curentPageNo+1}</a></li>
+
+									<%-- 上一页 --%>
+									<c:if test="${pageInfo.hasPreviousPage}">
+										<li>
+											<a href="${basePath}/teacher/showCourseGrade?page=${pageInfo.prePage}&courseid=${courseID}">&laquo;上一页</a>
+										</li>
 									</c:if>
-									<c:if test="${pagingVO.curentPageNo+2 <= pagingVO.totalCount}">
-										<li><a href="/student/showCourse?page=${pagingVO.curentPageNo+2}">${pagingVO.curentPageNo+2}</a></li>
+
+									<%-- 中间的索引 --%>
+									<c:forEach items="${pageInfo.navigatepageNums}" var="nav">
+										<%-- 当前页 --%>
+										<c:if test="${nav == pageInfo.pageNum}">
+											<li class="active"><a href="">${nav}</a></li>
+										</c:if>
+										<c:if test="${nav != pageInfo.pageNum}">
+											<li>
+												<a href="${basePath}/teacher/showCourseGrade?page=${nav}&courseid=${courseID}">${nav}</a>
+											</li>
+										</c:if>
+									</c:forEach>
+
+									<%-- 下一页 --%>
+									<c:if test="${pageInfo.hasNextPage}">
+										<li><a href="${basePath}/teacher/showCourseGrade?page=${pageInfo.nextPage}&courseid=${courseID}">下一页&raquo;</a></li>
 									</c:if>
-									<c:if test="${pagingVO.curentPageNo+3 <= pagingVO.totalCount}">
-										<li><a href="/student/showCourse?page=${pagingVO.curentPageNo+3}">${pagingVO.curentPageNo+3}</a></li>
-									</c:if>
-									<c:if test="${pagingVO.curentPageNo+4 <= pagingVO.totalCount}">
-										<li><a href="/student/showCourse?page=${pagingVO.curentPageNo+4}">${pagingVO.curentPageNo+4}</a></li>
-									</c:if>
-									<li><a href="/student/showCourse?page=${pagingVO.totalCount}">最后一页&raquo;</a></li>
+
 								</ul>
 							</nav>
 						</c:if>
@@ -90,17 +101,17 @@
 		<%--设置菜单中--%>
 		$("#nav li:nth-child(1)").addClass("active");
 
-        function confirmd() {
-            var msg = "您真的确定要删除吗？！";
-            if (confirm(msg)==true){
-                return true;
-            }else{
-                return false;
-            }
-        }
-
-        $("#sub").click(function () {
-            $("#form1").submit();
-        });
+//        function confirmd() {
+//            var msg = "您真的确定要删除吗？！";
+//            if (confirm(msg)==true){
+//                return true;
+//            }else{
+//                return false;
+//            }
+//        }
+//
+//        $("#sub").click(function () {
+//            $("#form1").submit();
+//        });
 	</script>
 </html>

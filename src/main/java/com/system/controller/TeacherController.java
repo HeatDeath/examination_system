@@ -1,5 +1,6 @@
 package com.system.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.system.po.Course;
 import com.system.po.CourseCustom;
@@ -15,10 +16,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/teacher")
@@ -56,16 +60,21 @@ public class TeacherController {
 
     // 显示成绩
     @RequestMapping(value = "/showCourseGrade", method = RequestMethod.GET)
-    public String gradeCourse(@RequestParam("id") Integer courseID, Model model) throws Exception {
-
-        List<SelectedCourseCustom> list = selectedCourseService.findByCourseID(courseID);
-        model.addAttribute("selectedCourseList", list);
+    public String gradeCourse(@RequestParam("courseid") Integer courseID,
+                              @RequestParam(required = false, defaultValue = "1") int page,
+                              Model model) throws Exception {
+        // 通过 courseID 获取 selectedCourseCustomList
+        List<SelectedCourseCustom> list = selectedCourseService.findByCourseID(courseID, page, ROWS);
+        model.addAttribute("pageInfo", new PageInfo<SelectedCourseCustom>(list));
+        model.addAttribute("page", page);
+        model.addAttribute("rows", ROWS);
+        model.addAttribute("courseID", courseID);
         return "teacher/showGrade";
     }
 
-    // 打分
-    @RequestMapping(value = "/mark", method = {RequestMethod.GET})
-    public String markUI(SelectedCourseCustom scc, Model model) throws Exception {
+    // 打分 页面跳转
+    @RequestMapping(value = "/mark", method = RequestMethod.GET)
+    public String mark(SelectedCourseCustom scc, Model model) throws Exception {
 
         SelectedCourseCustom selectedCourseCustom = selectedCourseService.findOne(scc);
 
@@ -74,18 +83,26 @@ public class TeacherController {
         return "teacher/mark";
     }
 
-    // 打分
-    @RequestMapping(value = "/mark", method = {RequestMethod.POST})
-    public String mark(SelectedCourseCustom scc) throws Exception {
-
-        selectedCourseService.updateOne(scc);
-
-        return "redirect:/teacher/gradeCourse?id="+scc.getCourseid();
+    // 打分 表单处理
+    @ResponseBody
+    @RequestMapping(value = "/mark", method = RequestMethod.POST)
+    public String doMark(SelectedCourseCustom scc) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        try{
+            selectedCourseService.updateOne(scc);
+            resultMap.put("msg", "success");
+            resultMap.put("page_url", "/teacher/showCourseGrade?courseid="+scc.getCourseid());
+        }catch (Exception e){
+            resultMap.put("msg", "fail");
+            resultMap.put("page_url", "/teacher/mark?studentid="+scc.getStudentid()+
+                          "&courseid=" +scc.getCourseid());
+        }
+        return JSON.toJSONString(resultMap);
     }
 
     //修改密码
     @RequestMapping(value = "/passwordRest")
     public String passwordRest() throws Exception {
-        return "teacher/passwordRest";
+        return "teacher/passwordReset";
     }
 }

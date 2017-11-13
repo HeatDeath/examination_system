@@ -56,7 +56,7 @@
 									<td>${item.coursetype}</td>
 									<td>${item.score}</td>
 									<td>
-										<button class="btn btn-default btn-xs btn-info" onClick="window.location.href='/teacher/showCourseGrade?id=${item.courseid}'">成绩</button>
+										<button class="btn btn-default btn-xs btn-info" onClick="window.location.href='/teacher/showCourseGrade?courseid=${item.courseid}'">成绩</button>
 										<!--弹出框-->
 									</td>
 								</tr>

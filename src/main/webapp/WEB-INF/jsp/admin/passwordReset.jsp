@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div class="form-group" style="text-align: center">
-                            <button class="btn btn-default" type="button" id="submitResetAdminPassword">提交</button>
+                            <button class="btn btn-default" type="button" id="submitResetPassword">提交</button>
                             <button class="btn btn-default" type="reset">重置</button>
                         </div>
                     </form>
@@ -73,7 +73,7 @@
         }
     }
 
-    $("#submitResetAdminPassword").click(function () {
+    $("#submitResetPassword").click(function () {
         $('#editForm').ajaxSubmit({
             dateType: 'json',
             success: function (respText) {

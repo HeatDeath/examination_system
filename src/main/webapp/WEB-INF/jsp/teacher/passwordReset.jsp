@@ -2,8 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>修改用户密码</title>
+
     <jsp:include page="../common.jsp"/>
+
 </head>
 <body>
 <!-- 顶栏 -->
@@ -16,16 +18,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
-                        <h1 style="text-align: center;">修改密码</h1>
+                        <h1 style="text-align: center;">重置密码</h1>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form name="reset" class="form-horizontal" role="form" action="${basePath}/passwordRest"
-                          id="editForm" method="post">
+                    <form name="reset" class="form-horizontal" role="form"
+                          action="${basePath}/passwordReset" id="editForm" method="post">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">旧密码</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="oldPassword" placeholder="请输入旧密码">
+                                <input type="password" class="form-control" name="oldPassword" placeholder="请输入旧密码">
                             </div>
                         </div>
                         <div class="form-group">
@@ -38,12 +40,12 @@
                             <label class="col-sm-2 control-label">确认密码</label>
                             <div class="col-sm-10">
                                 <input type="password" name="password2" class="form-control" placeholder="请再次输入密码"
-                                onchange="check_password()">
+                                       onchange="check_password()">
                             </div>
                         </div>
                         <div class="form-group" style="text-align: center">
-                            <button class="btn btn-default" type="button" id="submitResetAdminPassword">提交</button>
-                            <button class="btn btn-default">重置</button>
+                            <button class="btn btn-default" type="button" id="submitResetPassword">提交</button>
+                            <button class="btn btn-default" type="reset">重置</button>
                         </div>
                     </form>
                 </div>
@@ -71,7 +73,7 @@
         }
     }
 
-    $("#submitResetAdminPassword").click(function () {
+    $("#submitResetPassword").click(function () {
         $('#editForm').ajaxSubmit({
             dateType: 'json',
             success: function (respText) {
