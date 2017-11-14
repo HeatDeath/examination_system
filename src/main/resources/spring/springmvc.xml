@@ -34,6 +34,12 @@
             <mvc:mapping path="/admin/*" />
             <bean class="com.system.interceptor.AdminInterceptor" />
         </mvc:interceptor>
+
+        <!-- 配置一个用于处理对于 /admin/* 请求的拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/student/*" />
+            <bean class="com.system.interceptor.StudentInterceptor" />
+        </mvc:interceptor>
     </mvc:interceptors>
 
 

@@ -34,6 +34,8 @@ public class LoginController {
             return "redirect:/admin/showCourse";
         }else if (role.hasRole("teacher")) {
             return "redirect:/teacher/showCourse";
+        }else if (role.hasRole("student")) {
+            return "redirect:/student/showCourse";
         }
 
         return "/login";

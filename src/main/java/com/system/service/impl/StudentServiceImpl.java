@@ -81,10 +81,4 @@ public class StudentServiceImpl implements StudentService {
 
         return studentCustomMapper.selectByName(name);
     }
-
-    @Override
-    public StudentCustom findStudentAndSelectCourseListByName(String name) throws Exception {
-
-        return null;
-    }
 }

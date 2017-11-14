@@ -30,11 +30,11 @@ public class SelectedCourseCustom extends SelectedCourse {
         this.studentCustom = studentCustom;
     }
 
-    public CourseCustom getCouseCustom() {
+    public CourseCustom getCourseCustom() {
         return courseCustom;
     }
 
-    public void setCouseCustom(CourseCustom couseCustom) {
-        this.courseCustom = couseCustom;
+    public void setCourseCustom(CourseCustom courseCustom) {
+        this.courseCustom = courseCustom;
     }
 }

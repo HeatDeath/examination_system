@@ -50,15 +50,6 @@ public class SelectedCourseServiceImpl implements SelectedCourseService {
 
         return list;
     }
-    
-    //获取该课程学生数
-    @Override
-    public Long countByCourseID(Integer id) throws Exception {
-        SelectedCourseExample example = new SelectedCourseExample();
-        example.or().andCourseidEqualTo(id);
-
-        return selectedCourseMapper.countByExample(example);
-    }
 
     //查询指定学生成绩
     @Override
@@ -102,21 +93,33 @@ public class SelectedCourseServiceImpl implements SelectedCourseService {
     }
 
     @Override
-    public void save(SelectedCourseCustom selectedCourseCustom) throws Exception {
-        selectedCourseMapper.insert(selectedCourseCustom);
+    public boolean save(SelectedCourseCustom selectedCourseCustom) throws Exception {
+        SelectedCourseExample example = new SelectedCourseExample();
+
+        // where courseID == courseID and studentID == studentID
+        example.or().andCourseidEqualTo(selectedCourseCustom.getCourseid())
+                .andStudentidEqualTo(selectedCourseCustom.getStudentid());
+        List<SelectedCourse> get_scc = selectedCourseMapper.selectByExample(example);
+        if (get_scc.size() == 0){
+            selectedCourseMapper.insert(selectedCourseCustom);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
     public List<SelectedCourseCustom> findByStudentID(Integer id) throws Exception {
-        return null;
+        return selectedCourseCustomMapper.selectByStudentID(id);
     }
 
     @Override
     public void remove(SelectedCourseCustom selectedCourseCustom) throws Exception {
         SelectedCourseExample example = new SelectedCourseExample();
 
-        example.or().andCourseidEqualTo(selectedCourseCustom.getCourseid());
-        example.or().andStudentidEqualTo(selectedCourseCustom.getStudentid());
+        // where courseID == courseID and studentID == studentID
+        example.or().andCourseidEqualTo(selectedCourseCustom.getCourseid())
+                .andStudentidEqualTo(selectedCourseCustom.getStudentid());
 
         selectedCourseMapper.deleteByExample(example);
     }

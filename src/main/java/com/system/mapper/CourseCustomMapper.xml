@@ -24,4 +24,31 @@
         teacher.userID = #{id}
     </select>
 
+
+    <select id="selectByStudentId" resultMap="BaseResultMap">
+      SELECT
+        student.*,
+        course.*,
+        selected_course.*
+      FROM
+        student,
+        course,
+        selected_course
+      WHERE
+        student.userID = #{id}
+      AND
+        selected_course.studentID = student.userID
+      AND
+        course.courseID = selected_course.courseID
+    </select>
+
+    <select id="selectAll" resultType="com.system.po.CourseCustom">
+        SELECT
+          course.*
+        FROM
+          course
+        WHERE
+          course.courseID LIKE '%'
+    </select>
+
 </mapper>

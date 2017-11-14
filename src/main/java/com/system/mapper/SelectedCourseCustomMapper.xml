@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.system.mapper.SelectedCourseCustomMapper">
-    <!--<resultMap id="BaseResultMap" type="com.system.po.SelectedCourseCustom">-->
-    <!--<id column="userID" jdbcType="INTEGER" property="userid" />-->
-    <!--<result column="userName" jdbcType="VARCHAR" property="username" />-->
-    <!--<result column="sex" jdbcType="VARCHAR" property="sex" />-->
-    <!--<result column="birthYear" jdbcType="DATE" property="birthyear" />-->
-    <!--<result column="grade" jdbcType="DATE" property="grade" />-->
-    <!--<result column="collegeID" jdbcType="INTEGER" property="collegeid" />-->
-    <!--<result column="collegeName" jdbcType="VARCHAR" property="collegeName"/>-->
-    <!--</resultMap>-->
 
     <resultMap id="BaseResultMap" type="SelectedCourseCustom">
 
@@ -25,40 +16,49 @@
             <result column="classRoom" property="classroom"/>
             <result column="courseWeek" property="courseweek"/>
             <result column="courseType" property="coursetype"/>
-            <!--<result column="collegeID" property="collegeid"/>-->
             <result column="score" property="score"/>
         </association>
 
         <association property="studentCustom" javaType="StudentCustom">
             <id column="userID" property="userid"/>
             <result column="userName" property="username"/>
-            <!--<result column="teacherID" property="sex"/>-->
-            <!--<result column="courseTime" property="coursetime"/>-->
-            <!--<result column="classRoom" property="classroom"/>-->
-            <!--<result column="courseWeek" property="courseweek"/>-->
-            <!--<result column="courseType" property="coursetype"/>-->
-            <!--<result column="collegeID" property="collegeid"/>-->
-            <!--<result column="score" property="score"/>-->
         </association>
     </resultMap>
 
     <!-- 对于 student、course、selected_course 表进行联合查询 -->
     <select id="selectByCourseID" resultMap="BaseResultMap">
-    SELECT
-      student.*,
-      course.*,
-      selected_course.*
-    FROM
-      student,
-      course,
-      selected_course
-    WHERE
-      selected_course.courseID = #{id}
-    AND
-      student.userID = selected_course.studentID
-    AND
-      course.courseID = selected_course.courseID
-  </select>
+        SELECT
+          student.*,
+          course.*,
+          selected_course.*
+        FROM
+          student,
+          course,
+          selected_course
+        WHERE
+          selected_course.courseID = #{id}
+        AND
+          student.userID = selected_course.studentID
+        AND
+          course.courseID = selected_course.courseID
+    </select>
+
+    <select id="selectByStudentID" resultMap="BaseResultMap">
+        SELECT
+            student.*,
+            course.*,
+            selected_course.*
+        FROM
+            student,
+            course,
+            selected_course
+        WHERE
+            student.userID = #{id}
+        AND
+            selected_course.studentID = student.userID
+        AND
+            course.courseID = selected_course.courseID
+    </select>
 
 
 </mapper>

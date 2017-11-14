@@ -13,7 +13,7 @@ public interface CourseService {
     Boolean removeById(Integer id) throws Exception;
 
     //插入课程信息
-    Boolean save(CourseCustom couseCustom) throws Exception;
+    Boolean save(CourseCustom courseCustom) throws Exception;
 
     //获取课程总数
     long getCountCourse() throws Exception;
@@ -29,4 +29,11 @@ public interface CourseService {
 
     // 根据条件分页查询
     List<Course> selectCourseByName(Course course, int page, int rows);
+
+    //根据学生id查找课程
+    List<CourseCustom> findByStudentID(Integer id, int page, int rows) throws Exception;
+
+
+    //选取全部课程
+    List<CourseCustom> selectAll(int page, int rows) throws Exception;
 }

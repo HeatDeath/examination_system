@@ -126,4 +126,17 @@ public class CourseServiceImpl implements CourseService{
         PageHelper.startPage(page, rows);
         return courseCustomMapper.selectByTeacherId(id);
     }
+
+    @Override
+    public List<CourseCustom> findByStudentID(Integer id, int page, int rows) throws Exception {
+
+        PageHelper.startPage(page, rows);
+        return courseCustomMapper.selectByStudentId(id);
+    }
+
+    @Override
+    public List<CourseCustom> selectAll(int page, int rows) throws Exception {
+        PageHelper.startPage(page, rows);
+        return courseCustomMapper.selectAll();
+    }
 }
