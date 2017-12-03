@@ -1,7 +1,7 @@
 package com.system.service.impl;
 
-import com.system.mapper.RoleMapper;
-import com.system.po.Role;
+import com.system.dao.RoleMapper;
+import com.system.pojo.Role;
 import com.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

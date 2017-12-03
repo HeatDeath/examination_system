@@ -1,7 +1,7 @@
 package com.system.service;
 
-import com.system.po.Course;
-import com.system.po.CourseCustom;
+import com.system.pojo.Course;
+import com.system.pojo.CourseCustom;
 
 import java.util.List;
 

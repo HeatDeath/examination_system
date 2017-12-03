@@ -1,6 +1,6 @@
 package com.system.controller;
 
-import com.system.po.UserLogin;
+import com.system.pojo.UserLogin;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;

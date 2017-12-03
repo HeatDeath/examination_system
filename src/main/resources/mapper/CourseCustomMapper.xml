@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.dao.CourseCustomMapper">
+    <resultMap id="BaseResultMap" type="com.system.pojo.CourseCustom">
+        <id column="courseID" jdbcType="INTEGER" property="courseid" />
+        <result column="courseName" jdbcType="VARCHAR" property="coursename" />
+        <result column="teacherID" jdbcType="INTEGER" property="teacherid" />
+        <result column="courseTime" jdbcType="VARCHAR" property="coursetime" />
+        <result column="classRoom" jdbcType="VARCHAR" property="classroom" />
+        <result column="courseWeek" jdbcType="INTEGER" property="courseweek" />
+        <result column="courseType" jdbcType="VARCHAR" property="coursetype" />
+        <result column="collegeID" jdbcType="INTEGER" property="collegeid" />
+        <result column="score" jdbcType="INTEGER" property="score" />
+        <result column="collegeName" jdbcType="VARCHAR" property="collegeName" />
+    </resultMap>
+
+    <select id="selectByTeacherId" resultMap="BaseResultMap">
+      SELECT
+        teacher.*,
+        course.*
+      FROM
+        teacher LEFT JOIN course ON teacher.userID = course.teacherID
+      WHERE
+        teacher.userID = #{id}
+    </select>
+
+
+    <select id="selectByStudentId" resultMap="BaseResultMap">
+      SELECT
+        student.*,
+        course.*,
+        selected_course.*
+      FROM
+        student,
+        course,
+        selected_course
+      WHERE
+        student.userID = #{id}
+      AND
+        selected_course.studentID = student.userID
+      AND
+        course.courseID = selected_course.courseID
+    </select>
+
+    <select id="selectAll" resultType="com.system.pojo.CourseCustom">
+        SELECT
+          course.*
+        FROM
+          course
+        WHERE
+          course.courseID LIKE '%'
+    </select>
+
+</mapper>

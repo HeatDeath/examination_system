@@ -1,7 +1,7 @@
 package com.system.service;
 
-import com.system.po.Teacher;
-import com.system.po.TeacherCustom;
+import com.system.pojo.Teacher;
+import com.system.pojo.TeacherCustom;
 
 import java.util.List;
 

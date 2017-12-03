@@ -2,9 +2,8 @@ package com.system.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
-import com.system.po.Course;
-import com.system.po.CourseCustom;
-import com.system.po.SelectedCourseCustom;
+import com.system.pojo.CourseCustom;
+import com.system.pojo.SelectedCourseCustom;
 import com.system.service.CourseService;
 import com.system.service.SelectedCourseService;
 import com.system.service.TeacherService;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

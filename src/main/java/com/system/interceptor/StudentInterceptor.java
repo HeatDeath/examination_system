@@ -1,6 +1,6 @@
 package com.system.interceptor;
 
-import com.system.po.SelectedCourseCustom;
+import com.system.pojo.SelectedCourseCustom;
 import com.system.service.CourseService;
 import com.system.service.SelectedCourseService;
 import org.apache.shiro.SecurityUtils;

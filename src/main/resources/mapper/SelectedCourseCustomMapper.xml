@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.dao.SelectedCourseCustomMapper">
+
+    <resultMap id="BaseResultMap" type="SelectedCourseCustom">
+
+        <result column="courseID" property="courseid"/>
+        <result column="studentID" property="studentid"/>
+        <result column="mark" property="mark"/>
+
+        <association property="courseCustom" javaType="CourseCustom">
+            <id column="courseID" property="courseid"/>
+            <result column="courseName" property="coursename"/>
+            <result column="teacherID" property="teacherid"/>
+            <result column="courseTime" property="coursetime"/>
+            <result column="classRoom" property="classroom"/>
+            <result column="courseWeek" property="courseweek"/>
+            <result column="courseType" property="coursetype"/>
+            <result column="score" property="score"/>
+        </association>
+
+        <association property="studentCustom" javaType="StudentCustom">
+            <id column="userID" property="userid"/>
+            <result column="userName" property="username"/>
+        </association>
+    </resultMap>
+
+    <!-- 对于 student、course、selected_course 表进行联合查询 -->
+    <select id="selectByCourseID" resultMap="BaseResultMap">
+        SELECT
+          student.*,
+          course.*,
+          selected_course.*
+        FROM
+          student,
+          course,
+          selected_course
+        WHERE
+          selected_course.courseID = #{id}
+        AND
+          student.userID = selected_course.studentID
+        AND
+          course.courseID = selected_course.courseID
+    </select>
+
+    <select id="selectByStudentID" resultMap="BaseResultMap">
+        SELECT
+            student.*,
+            course.*,
+            selected_course.*
+        FROM
+            student,
+            course,
+            selected_course
+        WHERE
+            student.userID = #{id}
+        AND
+            selected_course.studentID = student.userID
+        AND
+            course.courseID = selected_course.courseID
+    </select>
+
+
+</mapper>

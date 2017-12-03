@@ -1,6 +1,6 @@
 package com.system.service;
 
-import com.system.po.SelectedCourseCustom;
+import com.system.pojo.SelectedCourseCustom;
 
 import java.util.List;
 

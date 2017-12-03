@@ -3,17 +3,16 @@ package com.system.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
 import com.system.exception.CustomException;
-import com.system.mapper.CollegeMapper;
-import com.system.mapper.CourseMapper;
-import com.system.mapper.TeacherCustomMapper;
-import com.system.mapper.TeacherMapper;
-import com.system.po.*;
+import com.system.dao.CollegeMapper;
+import com.system.dao.CourseMapper;
+import com.system.dao.TeacherCustomMapper;
+import com.system.dao.TeacherMapper;
+import com.system.pojo.*;
 import com.system.service.TeacherService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

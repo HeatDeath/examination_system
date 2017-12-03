@@ -1,7 +1,7 @@
 package com.system.realm;
 
-import com.system.po.Role;
-import com.system.po.UserLogin;
+import com.system.pojo.Role;
+import com.system.pojo.UserLogin;
 import com.system.service.RoleService;
 import com.system.service.UserLoginService;
 import org.apache.shiro.authc.*;

@@ -1,6 +1,6 @@
 package com.system.service;
 
-import com.system.po.UserLogin;
+import com.system.pojo.UserLogin;
 
 public interface UserLoginService {
 

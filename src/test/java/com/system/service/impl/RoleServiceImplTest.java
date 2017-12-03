@@ -1,7 +1,7 @@
 package com.system.service.impl;
 
 import com.system.BaseTest;
-import com.system.po.Role;
+import com.system.pojo.Role;
 import com.system.service.RoleService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

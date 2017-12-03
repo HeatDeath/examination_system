@@ -2,11 +2,11 @@ package com.system.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
-import com.system.mapper.CollegeMapper;
-import com.system.mapper.CourseCustomMapper;
-import com.system.mapper.CourseMapper;
-import com.system.mapper.SelectedCourseMapper;
-import com.system.po.*;
+import com.system.dao.CollegeMapper;
+import com.system.dao.CourseCustomMapper;
+import com.system.dao.CourseMapper;
+import com.system.dao.SelectedCourseMapper;
+import com.system.pojo.*;
 import com.system.service.CourseService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

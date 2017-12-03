@@ -1,7 +1,7 @@
 package com.system.service.impl;
 
 import com.system.BaseTest;
-import com.system.po.UserLogin;
+import com.system.pojo.UserLogin;
 import com.system.service.UserLoginService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

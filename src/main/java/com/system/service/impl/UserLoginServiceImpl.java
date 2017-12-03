@@ -1,8 +1,8 @@
 package com.system.service.impl;
 
-import com.system.mapper.UserLoginMapper;
-import com.system.po.UserLogin;
-import com.system.po.UserLoginExample;
+import com.system.dao.UserLoginMapper;
+import com.system.pojo.UserLogin;
+import com.system.pojo.UserLoginExample;
 import com.system.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

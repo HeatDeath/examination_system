@@ -1,0 +1,63 @@
+package com.system.pojo;
+
+public class UserLogin {
+    private Integer userid;
+
+    private String username;
+
+    private String password;
+
+    private Integer role;
+
+//    public UserLogin() {
+//    }
+//
+//    public UserLogin(Integer userid, String username, String password, Integer role) {
+//        this.userid = userid;
+//        this.username = username;
+//        this.password = password;
+//        this.role = role;
+//    }
+
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "UserLogin{" +
+                "userid=" + userid +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
+}

@@ -1,7 +1,7 @@
 package com.system.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.system.po.UserLogin;
+import com.system.pojo.UserLogin;
 import com.system.service.UserLoginService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;

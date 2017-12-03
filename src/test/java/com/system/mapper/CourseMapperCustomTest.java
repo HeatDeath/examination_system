@@ -1,19 +1,12 @@
 package com.system.mapper;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.system.BaseTest;
-import com.system.po.*;
-import org.apache.ibatis.session.RowBounds;
-import org.junit.Before;
+import com.system.dao.CourseMapper;
+import com.system.pojo.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Jacey on 2017/6/29.

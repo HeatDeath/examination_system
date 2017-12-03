@@ -2,8 +2,8 @@ package com.system.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
-import com.system.po.CourseCustom;
-import com.system.po.SelectedCourseCustom;
+import com.system.pojo.CourseCustom;
+import com.system.pojo.SelectedCourseCustom;
 import com.system.service.CourseService;
 import com.system.service.SelectedCourseService;
 import com.system.service.StudentService;
